@@ -1,0 +1,19 @@
+$infoHeight: 50px;
+$backgroundColor: #afafaf;
+
+.mainWindow {
+  position: absolute;
+  top: $infoHeight;
+  background-color: $backgroundColor;
+  width: 100vw;
+  height: 100vh;
+}
+
+.headerContainer {
+  position: inherit;
+  top: 0px;
+  height: $infoHeight;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

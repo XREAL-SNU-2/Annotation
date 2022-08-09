@@ -1,0 +1,23 @@
+$backgroundColor: #123456;
+$borderRadius: 5px;
+$borderColor: #987654;
+
+.bookListContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+  margin: auto;
+  border-color: $borderColor;
+}
+
+.bookWrapper {
+  width: auto;
+  margin: auto;
+  padding: 10px;
+  align-items: center;
+  border-style: solid;
+  border-radius: $borderRadius;
+  border-color: $borderColor;
+}

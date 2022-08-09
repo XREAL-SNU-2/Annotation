@@ -1,0 +1,28 @@
+$backgroundColor: #234567;
+$borderRadius: 5px;
+$borderColor: #876543;
+
+.mainpage {
+  // background-color: $backgroundColor;
+  width: 80vw;
+  height: 100vh;
+}
+
+.topicBox {
+  position: fixed;
+  display: block;
+  top: 50px;
+  width: calc((100vw - 800px) * 0.45);
+  border-right: 1px solid rgb(63, 63, 63);
+  background-color: $backgroundColor;
+  height: 100%;
+  z-index: 99;
+}
+
+.bookBox {
+  position: absolute;
+  left: calc((100vw - 800px) * 0.45);
+  width: 100vh;
+  height: 100vw;
+  border-color: $borderColor;
+}

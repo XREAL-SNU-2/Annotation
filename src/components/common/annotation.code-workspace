@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "../../.."
+	},
+	{
+		"path": "../../../../demodapp"
+	},
+	{
+		"path": "../../../../../../grids/grids-hybrid-app"
+	}
+],
+  "settings": {}
+}

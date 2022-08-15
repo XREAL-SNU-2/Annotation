@@ -3,12 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import Mainpage from './pages/MainPage';
 import Header from 'components/common/Header';
 import Uploadpage from 'pages/UploadPage';
-import { useMoralis, useMoralisQuery } from 'react-moralis';
-import { ConnectButton, Icon } from 'web3uikit';
+import { useMoralis } from 'react-moralis';
 import './App.scss';
+import ProfilePage from 'pages/ProfilePage';
 
 const App = () => {
-  const { isAuthenticated, Moralis } = useMoralis();
   return (
     <>
       <div className="page">
@@ -18,6 +17,7 @@ const App = () => {
         <div className="mainWindow">
           <Routes>
             <Route path="/" element={<Mainpage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/upload" element={<Uploadpage />} />
           </Routes>
         </div>

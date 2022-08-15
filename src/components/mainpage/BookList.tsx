@@ -1,38 +1,44 @@
-import React from 'react';
+import Moralis from 'moralis/types';
+import React, { useEffect, useState } from 'react';
+import { useMoralisQuery } from 'react-moralis';
 import BookItem from './BookItem';
 import './BookList.scss';
 
-const BookList = () => {
+type pdfArr = {
+  PDFArr: any[];
+};
+
+const BookList = ({ PDFArr }: pdfArr) => {
+  // useEffect(() => {
+  //   const getPDFs = async () => {
+  //     try {
+  //       const { fetch } = useMoralisQuery('PDFs');
+  //       const PDFs = Moralis.Object.extend('PDFs');
+  //       const query = new Moralis.Query(PDFs);
+  //       const result;
+
+  //       setPDFArr(results);
+  //     } catch (error) {
+  //       alert(error);
+  //     }
+  //   };
+  //   getPDFs();
+  // }, []);
   return (
     <>
       <div className="bookListContainer">
-        <div className="bookWrapper">
-          <BookItem name="book1" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book2" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book3" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book4" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book5" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book6" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book7" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book8" />
-        </div>
-        <div className="bookWrapper">
-          <BookItem name="book9" />
-        </div>
+        {PDFArr?.map((e, index) => {
+          return (
+            <div className="bookWrapper" key={index}>
+              <BookItem
+                title={e.attributes.title}
+                info={e.attributes.info}
+                thumbnail={e.attributes.thumbnail}
+                writer={e.attributes.writer}
+              />
+            </div>
+          );
+        })}
       </div>
     </>
   );

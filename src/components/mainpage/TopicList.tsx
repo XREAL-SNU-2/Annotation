@@ -3,19 +3,19 @@ import { Input } from 'web3uikit';
 import TopicItem from './TopicItem';
 import './TopicList.scss';
 
-const TopicList = () => {
+interface topicProps {
+  topics: string[];
+}
+
+const TopicList = ({ topics }: topicProps) => {
   return (
     <>
       <div className="topicListWrapper">
-        <div className="topicItemWrapper">
-          <TopicItem />
-        </div>
-        <div className="topicItemWrapper">
-          <TopicItem />
-        </div>
-        <div className="topicItemWrapper">
-          <TopicItem />
-        </div>
+        {topics.map((topic, index) => (
+          <div className="topicItemWrapper" key={index}>
+            <TopicItem topic={topic} />
+          </div>
+        ))}
       </div>
     </>
   );

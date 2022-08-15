@@ -1,10 +1,13 @@
 import React from 'react';
 import './TopicItem.scss';
 
-const TopicItem = () => {
+type topicProps = {
+  topic: string;
+};
+const TopicItem = ({ topic }: topicProps) => {
   return (
     <>
-      <div className="TopicItem">TOPICITEM</div>
+      <div className="TopicItem">{topic}</div>
     </>
   );
 };

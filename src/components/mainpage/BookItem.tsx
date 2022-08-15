@@ -6,10 +6,13 @@ import Modal from './Modal';
 import './BookItem.scss';
 
 type book = {
-  name: string;
+  title: string;
+  info: string;
+  thumbnail: string;
+  writer: string;
 };
 
-const BookItem = ({ name }: book) => {
+const BookItem = ({ title, info, thumbnail, writer }: book) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
@@ -19,16 +22,14 @@ const BookItem = ({ name }: book) => {
       <div>
         {isOpenModal && (
           <Modal onClickToggleModal={onClickToggleModal}>
-            <BookInfo name={name} />
+            <BookInfo title={title} info={info} thumbnail={thumbnail} />
           </Modal>
         )}
       </div>
       <div className="dialogButton" onClick={onClickToggleModal}>
-        <img
-          className="bookCover"
-          src="https://github.com/XREAL-SNU-2/Annotation/blob/mainpage_sb/src/images/bookcover.png"
-        />
-        <div className="bookName">{name}</div>
+        <img className="bookCover" src={thumbnail} />
+        <div className="bookName">{title}</div>
+        <div className="writer">{writer}</div>
       </div>
     </>
   );

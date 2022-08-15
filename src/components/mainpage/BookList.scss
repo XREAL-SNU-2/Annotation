@@ -13,11 +13,9 @@ $borderColor: #987654;
 }
 
 .bookWrapper {
-  width: auto;
+  width: 90%;
+  height: 90%;
   margin: auto;
   padding: 10px;
   align-items: center;
-  border-style: solid;
-  border-radius: $borderRadius;
-  border-color: $borderColor;
 }

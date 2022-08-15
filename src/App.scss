@@ -1,10 +1,10 @@
 $infoHeight: 50px;
-$backgroundColor: #afafaf;
+$backgroundColor: #eeeeee;
 
 .mainWindow {
   position: absolute;
   top: $infoHeight;
-  background-color: $backgroundColor;
+  background-color: white;
   width: 100vw;
   height: 100vh;
 }
@@ -15,5 +15,7 @@ $backgroundColor: #afafaf;
   height: $infoHeight;
   width: 100%;
   display: flex;
+  background-color: white;
   justify-content: space-between;
+  box-shadow: 4px;
 }

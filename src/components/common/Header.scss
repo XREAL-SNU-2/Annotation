@@ -3,14 +3,21 @@
   justify-content: space-between;
   width: 100%;
 }
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
 .logo {
   display: flex;
   align-items: center;
   margin-left: 20px;
+  width: 156px;
+  height: 37px;
 }
 .menu {
   display: flex;
   align-items: center;
+  margin-right: 20px;
 }
 .profile {
   align-items: center;
@@ -25,4 +32,29 @@
   width: 40px;
   height: 40px;
   padding: 5px;
+}
+.login {
+  width: 130px;
+  height: 30px;
+  border-radius: 0.5rem;
+  background-color: #fbfd56;
+  font-weight: 700px;
+  border: solid 1px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.afterLogin {
+  display: flex;
+}
+.logout {
+  width: 100px;
+  height: 30px;
+  border-radius: 0.5rem;
+  background-color: #fbfd56;
+  font-weight: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px black;
 }

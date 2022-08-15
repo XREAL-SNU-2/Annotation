@@ -1,0 +1,208 @@
+@import './Consts.scss';
+
+div {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    color: rgba(1, 1, 1, 1);
+}
+
+.middleAlign {
+    margin: auto;
+    width: calc(100% - 136px * 2);
+}
+.mainWindow {
+    background-color: #fff;
+}
+.page.profile {
+    padding-bottom: 135px;
+}
+.userInformation {
+    height: 374px;
+    margin-top: 86px;
+    display: flex;
+    justify-content: space-around;
+    align-items:flex-end;
+}
+.userInformation .userProfile {
+    width: 278px;
+}
+.userInformation .userProfile .profileImageContainer {
+    position: relative;
+    width: 100%;
+    height: 278px;
+    padding: 23px;
+}
+.userInformation .userProfile .profileImageContainer .profileImage {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background-color: #bbb;
+}
+.userInformation .userProfile .profileImageContainer .level {
+    width: 91px;
+    height: 91px;
+    border-radius: 50%;
+    background-color: rgba(217, 217, 217, 1);
+    position: absolute;
+    right: 6px;
+    bottom: 11px;
+}
+.userInformation .userProfile .name {
+    margin-top: 39px;
+    text-align: center;
+    width: 100%;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 57px;
+    color: rgba(1, 1, 1, 1);
+}
+.userInformation .userIntroduction {
+    box-sizing: border-box;
+
+    width: 574px;
+    height: 358px;
+    left: 653px;
+    top: 209px;
+
+    background: #F2F0F0;
+    border: 2px solid #E0E0E0;
+    border-radius: 15px;
+
+    padding: 15px 30px;
+}
+.userInformation .userIntroduction .name {
+    line-height: 31px;
+
+}
+.userInformation .userIntroduction .personalInformationContainer {
+    display: flex;
+    margin-top: 75px;
+}
+.userInformation .userIntroduction .personalInformationContainer .name {
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 42px;
+}
+.userInformation .tokenContainer {
+    width: 409px;
+    height: 346px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+.userInformation .tokenContainer div {
+    width: 100%;
+}
+.userInformation .tokenContainer .title {
+    height: 40px;
+    font-size: 32px;
+    line-height: 38px;
+}
+.userInformation .tokenContainer .tokenCount {
+    height: 50px;
+    margin-bottom: 100px;
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 400;
+} 
+.userInformation .tokenContainer .buyToken {
+    width: 100%;
+    height: 82px;
+    color: rgba(255, 255, 255, 255);
+    font-size: 36px;
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 15px;
+
+} 
+.containerTitle {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38px;
+}
+
+.badgesContainer {
+    margin-left: 136px;
+    margin-top: 60px;
+}
+.badgesContainer .badgesList {
+    margin-top: 49px;
+    width: fit-content;
+    display: flex;
+    overflow: visible;
+    flex-wrap: nowrap;
+}
+.badgesContainer .badgesList .badge {
+    width: 177px;
+    height: 177px;
+    margin-right: 97px;
+    border-radius: 50%;
+    background-color: #aaa;
+    filter: drop-shadow(0px 4px 8px rgba(72, 76, 85, 0.4));
+}
+
+.InformationContainer {
+    margin-top: 91px;    
+}
+.InformationContainer .title {
+    width: 100%;
+}
+.InformationContainer .InformationList {
+    width: 1633px;
+    height: 384px;
+
+    background: #EEEEEE;
+    border: 2px solid #E0E0E0;
+    border-radius: 15px;
+
+    margin-top: 36px;
+    margin-left: 14px;
+
+    box-sizing: border-box;
+    padding: 72px 61px;
+    overflow: scroll;
+}
+.InformationContainer .InformationList .InformationListScroll {
+    display: flex;
+    align-items: center;
+}
+.InformationContainer .InformationList .InformationListScroll .informationContainer {
+    position: relative;
+    width: 245px;
+    margin-right: 72px;
+}
+.InformationContainer .InformationList .InformationListScroll .informationContainer .informationTitle {
+    width: 100%;
+    height: 47px;
+    position: absolute;
+    background-color: #999;
+    z-index: 1;
+
+    font-size: 20px;
+    color: rgba(255, 255, 255, 1);
+    line-height: 24px;
+    padding: 12px 26px;
+}
+.InformationContainer .InformationList .InformationListScroll .informationContainer .informationDetail {
+    width: 100%;
+    height: 239px;
+    position: absolute;
+    top: 0px;
+    background: #FFFFFF;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+    z-index: 0;
+
+    font-size: 20px;
+    color: rgba(0, 0, 0, 1);
+    padding: 24px 26px;
+    padding-top: 71px;
+}
+.InformationContainer .InformationList .InformationListScroll .pdf {
+    width: 185px;
+    height: 253px;
+    margin-right: 81px;
+
+    background: #FFFFFF;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+}

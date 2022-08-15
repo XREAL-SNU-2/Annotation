@@ -5,6 +5,7 @@ import Header from 'components/common/Header';
 import { useMoralis } from 'react-moralis';
 import { ConnectButton, Icon } from 'web3uikit';
 import './App.scss';
+import ProfilePage from 'pages/ProfilePage';
 
 const App = () => {
   const { isAuthenticated, Moralis } = useMoralis();
@@ -19,6 +20,7 @@ const App = () => {
           <div className="mainWindow">
             <Routes>
               <Route path="/" element={<Mainpage />} />
+              <Route path="/profile" element = {<ProfilePage></ProfilePage>}></Route>
             </Routes>
           </div>
         </div>

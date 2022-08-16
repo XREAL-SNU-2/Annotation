@@ -1,0 +1,34 @@
+.pdf-page{ display: flex; margin-top: 100px; margin-left: 50px;}
+
+.markdown-writer{min-width: 500px; height: 1000px;}
+  
+.viewer{
+    background-color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 1000px;
+    margin-bottom: 100px;
+    min-width: 1200px;
+    margin-right: 20px;
+}
+  
+.bluebox{
+background-color: aqua;
+}
+
+.view-and-write{
+display: flex;
+height: 1200px;
+margin-bottom: 100px;
+}
+
+.markdown{
+min-width: 500px;
+height: 600px;
+}
+
+span{
+margin-top: 3px;
+}

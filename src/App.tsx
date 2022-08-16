@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Mainpage from './pages/MainPage';
+import Profile from './pages/Profile';
+import PdfPage from 'pages/PdfPage';
 import Header from 'components/common/Header';
 import { useMoralis } from 'react-moralis';
 import { ConnectButton, Icon } from 'web3uikit';
@@ -19,6 +21,8 @@ const App = () => {
           <div className="mainWindow">
             <Routes>
               <Route path="/" element={<Mainpage />} />
+              <Route path="/profile" element={<Profile/>}/>
+              <Route path="/pdfpage" element={<PdfPage fileUrl="https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf"/>}/>
             </Routes>
           </div>
         </div>

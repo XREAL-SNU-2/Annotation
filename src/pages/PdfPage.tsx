@@ -13,6 +13,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import PostingWritingPage from 'components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
+import './PdfPage.scss';
 import { Input } from 'web3uikit';
 
 interface DisplayNotesSidebarExampleProps {
@@ -26,7 +27,8 @@ interface Note {
     quote: string;
     price: number;
     good: number;
-    bad: number
+    bad: number;
+    author: string;
 }
 
 const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
@@ -35,6 +37,7 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
     const [writingMode, setWritingMode] = React.useState<boolean>(false);
     const [noteValue, setNoteValue] = React.useState<string>("");
     const [notePrice, setNotePrice] = React.useState<number>(0);
+    const [noteAuthor, setNoteAuthor] = React.useState<string>("");
     let noteId = notes.length;
 
     const noteEles: Map<number, HTMLElement> = new Map();
@@ -48,6 +51,10 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
 
     const OnPriceValueChange = (event?: React.ChangeEvent<HTMLInputElement>)=>{
         setNotePrice((event?.target.value as unknown) as number);
+    }
+
+    const OnAuthorValueChange = (event?: React.ChangeEvent<HTMLInputElement>)=>{
+        setNoteAuthor(event?.target.value as string);
     }
     
 
@@ -101,10 +108,13 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
                     quote: props.selectedText,
                     price: notePrice,
                     good: 0,
-                    bad: 0
+                    bad: 0,
+                    author: noteAuthor
                 };
                 setNotes(notes.concat([note]));
                 props.cancel();
+                setNoteAuthor("");
+                setNotePrice(0);
             }
         };
         //left: `${props.selectionRegion.left}%`,
@@ -119,13 +129,13 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
                     position: 'absolute',
                     left: `${props.selectionRegion.left*0.7}%`,
                     top: `${(props.selectionRegion.top + props.selectionRegion.height)*0.5}%`,
-                    width: 500,
-                    height: 800,
+                    width: 450,
+                    height: 600,
                     zIndex: 1,
                 }}
             >
                 <div>
-                    Noted by <input placeholder='Name'></input>
+                    Noted by <input placeholder='Name' onChange={OnAuthorValueChange}></input>
                 </div>
                 <div>
                     Price is <input onChange={OnPriceValueChange} placeholder="0" type="number"></input> Anno token
@@ -199,15 +209,13 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
                 overflow: 'hidden',
             }}
         >
-            <div
-                style={{
-                    flex: '1 1 0',
-                    overflow: 'auto',
-                }}
-            >
-                <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
-                    <Viewer fileUrl={fileUrl} plugins={[highlightPluginInstance]} />
-                </Worker>
+            
+            <div className='pdf-wrapper'>
+                <div className='pdf-content'>
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
+                        <Viewer fileUrl={fileUrl} plugins={[highlightPluginInstance]} />
+                    </Worker>
+                </div>
             </div>
             {writingMode&&(
                 <div style={{
@@ -232,21 +240,16 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
             )
             }
             {!writingMode&&(
-                <div
-                style={{
-                    borderRight: '1px solid rgba(0, 0, 0, 0.3)',
-                    width: '25%',
-                    overflow: 'auto',
-                }}
-            >
-                {notes.length === 0 && <div style={{ textAlign: 'center' }}>There is no note</div>}
+            <div className='post-list'>
+                {notes.length === 0 &&<div>There is no note</div>}
                 {notes.map((note) => {
                     return (
-                        <div key={note.id} style={{
-                            borderBottom: '1px solid rgba(0, 0, 0, .3)',
+                        <div key={note.id} className = "note-box"
+                        style={{
                             cursor: 'pointer',
                             padding: '8px',
                         }}>
+                        <div className='note-content'>
                             <div
                                 // Jump to the associated highlight area
                                 onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
@@ -262,13 +265,19 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
                                     }}
                                 >
                                     {note.quote}
+                                    <text className='note-authorName'>Noted by {note.author}</text>
                                 </blockquote>
                                 <div>
-                                    <MDEditor.Markdown source={note.content} style={{ backgroundColor: '#FFFFFF', minHeight: 150 }}/>
+                                    <MDEditor.Markdown source={note.content} style={{ backgroundColor: '#FFFFFF', height: 190 }}/>
                                 </div>
                                 
                             </div>
-                            <button>Pay {note.price} Anno token</button>
+                            <text className='note-boldword'>Good</text>
+                            <text className='note-mideumword'>{note.good}</text>
+                            <text className='note-boldword'>Bad</text>
+                            <text className='note-mideumword'>{note.bad}</text>
+                            <button className='buy-button'>Pay {note.price} Anno token</button>
+                            </div>
                         </div>
                     );
                 })}

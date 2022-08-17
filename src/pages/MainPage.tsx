@@ -16,19 +16,20 @@ const Mainpage = () => {
   }
   const [PDFArr, setPDFArr] = useState<any[]>();
 
-  async function getPDFs() {
-    try {
-      const PDFs = Moralis.Object.extend('PDFs');
-      const query = new Moralis.Query(PDFs);
-      const results = await query.find();
+  useEffect(() => {
+    async function getPDFs() {
+      try {
+        const PDFs = Moralis.Object.extend('PDFs');
+        const query = new Moralis.Query(PDFs);
+        const results = await query.find();
 
-      setPDFArr(results);
-    } catch (error) {
-      <></>;
+        setPDFArr(results);
+      } catch (error) {
+        <></>;
+      }
     }
-  }
-  getPDFs();
-
+    getPDFs();
+  });
   return (
     <>
       MAINPAGE

@@ -32,7 +32,6 @@ const Mainpage = () => {
   });
   return (
     <>
-      MAINPAGE
       <div className="mainpage">
         <div className="topicBox">
           <div className="topicHeader">Topic </div>

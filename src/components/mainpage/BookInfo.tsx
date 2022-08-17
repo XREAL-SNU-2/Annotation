@@ -10,12 +10,14 @@ type book = {
 const Bookinfo = ({ title, info, thumbnail }: book) => {
   return (
     <>
-      <div className="title">{title}</div>
-      <div className="info">
+      <div className="infoContainer">
         <img src={thumbnail} className="thumbnail" />
-        <div className="infoText">{info}</div>
+        <div className="info">
+          <div className="title">{title}</div>
+          <div className="infoText">{info}</div>
+        </div>
       </div>
-      <div className="buyButton">Buy</div>
+      <div className="buyPDFButton">USE 15 TOKEN TO READ</div>
     </>
   );
 };

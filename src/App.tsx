@@ -8,6 +8,7 @@ import Uploadpage from 'pages/UploadPage';
 import { useMoralis } from 'react-moralis';
 import './App.scss';
 import ProfilePage from 'pages/ProfilePage';
+import UpdatePDF from 'components/UpdatePDF';
 
 const App = () => {
   return (
@@ -26,6 +27,10 @@ const App = () => {
                 <PdfPage fileUrl="https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf" />
               }
             />
+            <Route
+              path="/test/updatepdf"
+              element={<UpdatePDF></UpdatePDF>}
+            ></Route>
           </Routes>
         </div>
       </div>

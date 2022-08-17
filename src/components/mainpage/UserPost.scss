@@ -1,0 +1,31 @@
+$theme-color: #0058de;
+$primary-color: #428cd4;
+$secondary-color: #ff9cda;
+$shadow-default: 0 0.8em 1em -0.5em rgba(darken($theme-color, 30%), 0.15), 0 1px 3px -2px rgba(darken($theme-color, 30%), 0.15);
+
+.card-body{
+    background-color: #e5e7f3;
+    min-height: 100px;
+}
+
+.card-text{
+    margin-left: 10px;
+}
+  
+
+
+.card{  border: 0;
+    box-shadow: $shadow-default;
+    background-color: #e5e7f3;
+    margin-bottom: 20px;
+    margin-top: 23px;
+}
+
+.card-header{    border-bottom: 0;
+    background-image: linear-gradient(150deg, $primary-color, $secondary-color);
+    color: white;}
+.card-footer{    background-color: rgba($theme-color, 0.05);
+    color: rgba(black, 0.5);
+    border-top: 0;
+    user-select: none;}
+

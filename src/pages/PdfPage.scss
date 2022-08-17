@@ -1,0 +1,135 @@
+.pdf-page{ display: flex; margin-top: 10px; margin-left: 50px;}
+
+.markdown-writer{min-width: 500px; height: 1000px;}
+  
+.viewer{
+    background-color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 1000px;
+    margin-bottom: 100px;
+    min-width: 1200px;
+    margin-right: 20px;
+}
+  
+.bluebox{
+background-color: aqua;
+}
+
+.view-and-write{
+display: flex;
+height: 1200px;
+margin-bottom: 100px;
+}
+
+.markdown{
+min-width: 500px;
+height: 600px;
+}
+
+span{
+margin-top: 3px;
+}
+
+.pdf-wrapper{
+    box-sizing: border-box;
+    position: absolute;
+    left: 1.82%;
+    right: 35.89%;
+    top: 1.19%;
+    bottom: 0%;
+    
+    background-color: #2A2A2A;
+    border: 2px solid #000000;
+    border-radius: 15px;
+}
+
+.pdf-content{
+    position: absolute;
+    left: 9%;
+    right: 9%;
+    top: 4.91%;
+    bottom: 0%;
+    
+    background: #FFFFFF;
+    box-shadow: 8px 0px 20px rgba(0, 0, 0, 0.35), -8px 0px 20px rgba(0, 0, 0, 0.35);
+}
+
+.post-list{
+    box-sizing: border-box;
+
+    position: absolute;
+    left: 65.89%;
+    right: 1.72%;
+    top: 1.19%;
+    bottom: 0%;
+
+    background: #E0E0E0;
+    border: 2px solid #BDBDBD;
+    border-radius: 15px;
+}
+
+.note-box{
+    
+    //position: absolute;
+    
+    background: #FFFFFF;
+    height: 267px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 20px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+
+}
+.note-boldword{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    margin-right: 3px;
+}
+.note-mideumword{
+    margin-right: 20px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.note-content{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.buy-button{
+    display: inline-block;
+    margin: 0 5px;
+    margin-top: 2px;
+    float: right;
+    background: #000000;
+    border: 1px solid #000000;
+    border-radius: 13px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+
+    color: #FFFFFF;
+    width: 232px;
+    height: 23px;
+}
+
+.note-authorName{
+
+    display: inline-block;
+    margin: 0 5px;
+    margin-top: 2px;
+    float: right;
+
+}

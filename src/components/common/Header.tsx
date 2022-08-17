@@ -27,25 +27,22 @@ const Header = () => {
             </div>
           ) : (
             <>
+              <div
+                className="buyTokenButton"
+                onClick={() => {
+                  <></>;
+                }}
+              >
+                Buy Anno Token
+              </div>
               <Link to="/profile">
                 <div className="profile">
                   <img
                     className="profileImg"
                     src={require('../../images/profile.png')}
                   />
-                  <img className="profileName" />
                 </div>
               </Link>
-              <div
-                className="logout"
-                onClick={() => {
-                  Moralis.User.logOut().then(() => {
-                    window.location.reload();
-                  });
-                }}
-              >
-                Logout
-              </div>
             </>
           )}
         </div>

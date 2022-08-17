@@ -15,6 +15,7 @@ $backgroundColor: #eeeeee;
   height: $headerHeight;
   width: 100%;
   display: flex;
+  background-color: $backgroundColor;
   justify-content: space-between;
-  box-shadow: 4px;
+  z-index: 100;
 }

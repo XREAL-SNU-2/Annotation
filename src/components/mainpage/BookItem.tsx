@@ -4,7 +4,6 @@ import { Input } from 'web3uikit';
 import BookInfo from './BookInfo';
 import Modal from './Modal';
 import './BookItem.scss';
-
 type book = {
   title: string;
   info: string;
@@ -14,9 +13,11 @@ type book = {
 
 const BookItem = ({ title, info, thumbnail, writer }: book) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  const onClickToggleModal = useCallback(() => {
+
+  const onClickToggleModal = useCallback(async () => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
+
   return (
     <>
       <div>

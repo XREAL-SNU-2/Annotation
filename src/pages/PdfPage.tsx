@@ -15,10 +15,8 @@ import PostingWritingPage from 'components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
-
-interface DisplayNotesSidebarExampleProps {
-    fileUrl: string;
-}
+import {useMoralis} from 'react-moralis';
+import {useLocation} from 'react-router-dom';
 
 interface Note {
     id: number;
@@ -31,13 +29,42 @@ interface Note {
     author: string;
 }
 
-const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
+interface CustomizedState{
+    pdfName: string;
+}
+
+const PdfPage = () => {
     const [message, setMessage] = React.useState('');
     const [notes, setNotes] = React.useState<Note[]>([]);
     const [writingMode, setWritingMode] = React.useState<boolean>(false);
     const [noteValue, setNoteValue] = React.useState<string>("");
     const [notePrice, setNotePrice] = React.useState<number>(0);
     const [noteAuthor, setNoteAuthor] = React.useState<string>("");
+    const [pdffileUrl, setPdfFileUrl] = React.useState<string>("https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf");
+    //Moralis Pdf 
+    const location = useLocation();
+    const pdfFileName = (location.state as CustomizedState).pdfName;
+    const {Moralis} = useMoralis();
+    React.useEffect(()=>{
+        async function getPDF() {
+            try{
+                const pdfs = Moralis.Object.extend("PDFs");
+                const query = new Moralis.Query(pdfs);
+                console.log(pdfFileName+"this is pdf name");
+                query.equalTo("title", pdfFileName);
+                const results = await query.find();
+                
+                setPdfFileUrl(results[0].get("PDFFile"));
+                
+            } catch(error){
+                console.error(error);
+            }
+        }
+
+        getPDF()
+    }, []);
+
+
     let noteId = notes.length;
 
     const noteEles: Map<number, HTMLElement> = new Map();
@@ -81,21 +108,10 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
                 offset={{ left: 0, top: -8 }}
             />
         </div>
-    ); ////props.toggle
+    ); 
 
-    /*const addPost = () => {
-        if (noteValue !== '') {
-            const note: Note = {
-                id: ++noteId,
-                content: noteValue,
-                highlightAreas: props.highlightAreas,
-                quote: props.selectedText,
-            };
-            setNotes(notes.concat([note]));
-            props.cancel();
-            setWritingMode(false);
-        }
-    };*/
+    
+
 
     const renderHighlightContent = (props: RenderHighlightContentProps) => {
         //We Should write author, price, 
@@ -213,7 +229,7 @@ const PdfPage: React.FC<DisplayNotesSidebarExampleProps> = ({fileUrl}) => {
             <div className='pdf-wrapper'>
                 <div className='pdf-content'>
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
-                        <Viewer fileUrl={fileUrl} plugins={[highlightPluginInstance]} />
+                        <Viewer fileUrl={pdffileUrl} plugins={[highlightPluginInstance]} />
                     </Worker>
                 </div>
             </div>

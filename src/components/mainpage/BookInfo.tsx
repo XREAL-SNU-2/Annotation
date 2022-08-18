@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import './BookInfo.scss';
-
+import { Link } from 'react-router-dom';
 type book = {
   title: string;
   info: string;
@@ -17,7 +17,10 @@ const Bookinfo = ({ title, info, thumbnail }: book) => {
           <div className="infoText">{info}</div>
         </div>
       </div>
-      <div className="buyPDFButton">USE 15 TOKEN TO READ</div>
+
+      <Link to="/pdfpage" state={{ pdfName: title }}>
+        <div className="buyPDFButton">USE 15 TOKEN TO READ</div>
+      </Link>
     </>
   );
 };

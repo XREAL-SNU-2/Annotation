@@ -10,7 +10,7 @@ import './App.scss';
 const App = () => {
   const { isAuthenticated, Moralis } = useMoralis();
 
-  console.log("App.js를 거친다");
+  // console.log("App.js를 거친다");
   return (
     <>
       {isAuthenticated ? (

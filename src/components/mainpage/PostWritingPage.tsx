@@ -47,14 +47,14 @@ const PostingWritingPage: React.FC<PostValue> = ({setPostValue}) =>{
                         return (
                             <div style={{ width: 120, padding: 10 }}>
                             <div>My Custom Toolbar</div>
-                            <button type="button" onClick={() => console.log('> execute: >>>>>')}>State</button>
+                            {/* <button type="button" onClick={() => console.log('> execute: >>>>>')}>State</button> */}
                             <button type="button" onClick={() => close()}>Close</button>
                             <button type="button" onClick={() => execute()}>Execute</button>
                             </div>
                         );
                         },
                         execute: (state, api)  => {
-                        console.log('>>>>>>update>>>>>', state)
+                        // console.log('>>>>>>update>>>>>', state)
                         },
                         buttonProps: { 'aria-label': 'Insert title'}
                     }),

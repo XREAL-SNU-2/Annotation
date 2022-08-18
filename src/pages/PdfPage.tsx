@@ -43,6 +43,9 @@ const PdfPage = () => {
     const [pdffileUrl, setPdfFileUrl] = React.useState<string>("https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf");
     //Moralis Pdf 
     const location = useLocation();
+    const [notePropsHighLightArea, setNotePropsHighLightArea] = React.useState<any>();
+    const [notePropsSelectedText, setNotePropsSelectedText] = React.useState<any>();
+    const [notePropsCancel, setNotePropsCancel] = React.useState<any>();
     const pdfFileName = (location.state as CustomizedState).pdfName;
     const {Moralis} = useMoralis();
     React.useEffect(()=>{
@@ -50,14 +53,14 @@ const PdfPage = () => {
             try{
                 const pdfs = Moralis.Object.extend("PDFs");
                 const query = new Moralis.Query(pdfs);
-                console.log(pdfFileName+"this is pdf name");
+                // console.log(pdfFileName+"this is pdf name");
                 query.equalTo("title", pdfFileName);
                 const results = await query.find();
                 
                 setPdfFileUrl(results[0].get("PDFFile"));
                 
             } catch(error){
-                console.error(error);
+                // console.error(error);
             }
         }
 
@@ -86,7 +89,7 @@ const PdfPage = () => {
     
 
     const renderHighlightTarget = (props: RenderHighlightTargetProps) => (
-        <div
+        <div className="addNoteButton"
             style={{
                 background: '#eee',
                 display: 'flex',
@@ -100,7 +103,10 @@ const PdfPage = () => {
             <Tooltip
                 position={Position.TopCenter}
                 target={
-                    <Button onClick={props.toggle}> 
+                    <Button onClick={() => {
+                        props.toggle();
+                        setWritingMode(true);
+                    }}> 
                         <MessageIcon />
                     </Button>
                 }
@@ -115,6 +121,9 @@ const PdfPage = () => {
 
     const renderHighlightContent = (props: RenderHighlightContentProps) => {
         //We Should write author, price, 
+        setNotePropsHighLightArea(props.highlightAreas);
+        setNotePropsSelectedText(props.selectedText);
+        setNotePropsCancel(props.cancel);
         const addNote = () => {
             if (noteValue !== '') {
                 const note: Note = {
@@ -133,10 +142,8 @@ const PdfPage = () => {
                 setNotePrice(0);
             }
         };
-        //left: `${props.selectionRegion.left}%`,
-        //top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
         return (
-            <div
+            <div className = "writeNoteContainer"
                 style={{
                     background: '#fff',
                     border: '1px solid rgba(0, 0, 0, .3)',
@@ -173,6 +180,101 @@ const PdfPage = () => {
             </div>
         );
     };
+
+    const addNote = (highlightAreas: any, selectedText: any, cancel: any) => {
+        if (noteValue !== '') {
+            alert("ASE");
+            const note: Note = {
+                id: ++noteId,
+                content: noteValue,
+                highlightAreas: highlightAreas,
+                quote: selectedText,
+                price: notePrice,
+                good: 0,
+                bad: 0,
+                author: noteAuthor
+            };
+            setNotes(notes.concat([note]));
+            cancel;
+            setNoteAuthor("");
+            setNotePrice(0);
+        }
+    };
+
+    const writeNoteContainer = React.useMemo(() => {
+        return (
+            <>
+                <div className="writeNoteContainer" >
+                    <div>
+                        <text>Noted By </text>
+                        <input></input>
+                    </div>
+                    <div>
+                        <text>제목: </text>
+                        <input></input>
+                    </div>
+                    <div>
+                        <PostingWritingPage setPostValue={setNoteValue}></PostingWritingPage>
+                    </div>
+                    <button onClick = {() => {
+                        addNote(notePropsHighLightArea, notePropsSelectedText, notePropsCancel);
+                        setWritingMode(false);
+                    }}></button>
+                    <button onClick={() => {
+                        notePropsCancel;
+                        setWritingMode(false);
+                    }}>취소</button>
+                </div>
+            </>
+        )
+    }, [notePropsHighLightArea, notePropsSelectedText, notePropsCancel, noteValue]);
+
+    const writtenNoteContainer = React.useMemo(() => {
+        return (
+            <>
+                {notes.length === 0 &&<div>There is no note</div>}
+                {notes.map((note) => {
+                    return (
+                        <div key={note.id} className = "note-box"
+                        style={{
+                            cursor: 'pointer',
+                            padding: '8px',
+                        }}>
+                        <div className='note-content'>
+                            <div
+                                // Jump to the associated highlight area
+                                onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
+                            >
+                                <blockquote
+                                    style={{
+                                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
+                                        fontSize: '.75rem',
+                                        lineHeight: 1.5,
+                                        margin: '0px 0px 8px 0px',
+                                        paddingLeft: '8px',
+                                        textAlign: 'justify',
+                                    }}
+                                >
+                                    {note.quote}
+                                    <text className='note-authorName'>Noted by {note.author}</text>
+                                </blockquote>
+                                <div>
+                                    <MDEditor.Markdown source={note.content} style={{ backgroundColor: '#FFFFFF', height: 190 }}/>
+                                </div>
+                                
+                            </div>
+                            <text className='note-boldword'>Good</text>
+                            <text className='note-mideumword'>{note.good}</text>
+                            <text className='note-boldword'>Bad</text>
+                            <text className='note-mideumword'>{note.bad}</text>
+                            <button className='buy-button'>Pay {note.price} Anno token</button>
+                            </div>
+                        </div>
+                    );
+                })}
+            </>
+        )
+    }, [notes]);
 
     const jumpToNote = (note: Note) => {
         if (noteEles.has(note.id)) {
@@ -234,69 +336,14 @@ const PdfPage = () => {
                 </div>
             </div>
             {writingMode&&(
-                <div style={{
-                    borderRight: '1px solid rgba(0, 0, 0, 0.3)',
-                    width: '25%',
-                    overflow: 'auto',
-                }}>
-                    <div>
-                        <text>Noted By </text>
-                        <input></input>
-                    </div>
-                    <div>
-                        <text>제목: </text>
-                        <input></input>
-                    </div>
-                    <div>
-                        <PostingWritingPage setPostValue={setNoteValue}></PostingWritingPage>
-                    </div>
-                    
-                    <button onClick={OnReadingMode}>취소</button>
+                <div className="post-list">
+                    {writeNoteContainer}
                 </div>
             )
             }
             {!writingMode&&(
             <div className='post-list'>
-                {notes.length === 0 &&<div>There is no note</div>}
-                {notes.map((note) => {
-                    return (
-                        <div key={note.id} className = "note-box"
-                        style={{
-                            cursor: 'pointer',
-                            padding: '8px',
-                        }}>
-                        <div className='note-content'>
-                            <div
-                                // Jump to the associated highlight area
-                                onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
-                            >
-                                <blockquote
-                                    style={{
-                                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
-                                        fontSize: '.75rem',
-                                        lineHeight: 1.5,
-                                        margin: '0px 0px 8px 0px',
-                                        paddingLeft: '8px',
-                                        textAlign: 'justify',
-                                    }}
-                                >
-                                    {note.quote}
-                                    <text className='note-authorName'>Noted by {note.author}</text>
-                                </blockquote>
-                                <div>
-                                    <MDEditor.Markdown source={note.content} style={{ backgroundColor: '#FFFFFF', height: 190 }}/>
-                                </div>
-                                
-                            </div>
-                            <text className='note-boldword'>Good</text>
-                            <text className='note-mideumword'>{note.good}</text>
-                            <text className='note-boldword'>Bad</text>
-                            <text className='note-mideumword'>{note.bad}</text>
-                            <button className='buy-button'>Pay {note.price} Anno token</button>
-                            </div>
-                        </div>
-                    );
-                })}
+                {writtenNoteContainer}
             </div>
             )
 

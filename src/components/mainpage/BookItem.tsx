@@ -16,7 +16,7 @@ const BookItem = ({ name }: book) => {
   
   const onClickToggleModal = useCallback(async() => {
     await setPdfFileName(name);
-    console.log(pdfFileName);
+    // console.log(pdfFileName);
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
 

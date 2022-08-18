@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-pdf-viewer/core": "^3.6.0",
+    "@react-pdf-viewer/default-layout": "^3.6.0",
     "@react-pdf-viewer/highlight": "^3.6.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

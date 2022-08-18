@@ -1,16 +1,16 @@
 import React from 'react';
 import BookItem from './BookItem';
 import './BookList.scss';
-
+import { Link } from 'react-router-dom';
 const BookList = () => {
   return (
     <>
       <div className="bookListContainer">
         <div className="bookWrapper">
-          <BookItem name="book1" />
+          <BookItem name="Mastering Ethereum" />
         </div>
         <div className="bookWrapper">
-          <BookItem name="book2" />
+          <BookItem name="Mastering Bitcoin" />
         </div>
         <div className="bookWrapper">
           <BookItem name="book3" />

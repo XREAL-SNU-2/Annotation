@@ -21,7 +21,7 @@ const PostingWritingPage: React.FC<PostValue> = ({setPostValue}) =>{
         }}>
                 <MDEditor className="markdown-writer"
                     value={markdownValue}
-                    height = {700}
+                    height = {500}
                     visibleDragbar = {false}
                     onChange={onTextChange}
                     preview="edit"

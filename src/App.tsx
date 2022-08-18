@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Mainpage from './pages/MainPage';
 import Profile from './pages/Profile';
@@ -7,10 +7,10 @@ import Header from 'components/common/Header';
 import { useMoralis } from 'react-moralis';
 import { ConnectButton, Icon } from 'web3uikit';
 import './App.scss';
-
 const App = () => {
   const { isAuthenticated, Moralis } = useMoralis();
 
+  console.log("App.js를 거친다");
   return (
     <>
       {isAuthenticated ? (
@@ -20,9 +20,9 @@ const App = () => {
           </div>
           <div className="mainWindow">
             <Routes>
-              <Route path="/" element={<Mainpage />} />
+              <Route path="/" element={<Mainpage/>} />
               <Route path="/profile" element={<Profile/>}/>
-              <Route path="/pdfpage" element={<PdfPage fileUrl="https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf"/>}/>
+              <Route path={`/pdfpage`} element={<PdfPage/>}/>
             </Routes>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import './BookInfo.scss';
-
+import {Link} from 'react-router-dom';
 type book = {
   title: string;
   info: string;

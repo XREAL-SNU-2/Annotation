@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, {Dispatch, SetStateAction, Suspense} from 'react';
 import { Link } from 'react-router-dom';
 import { TextArea, Icon, Loading } from 'web3uikit';
 import { useState, useEffect, useCallback } from 'react';
@@ -6,6 +6,7 @@ import { useMoralis, useMoralisQuery } from 'react-moralis';
 import TopicList from '../components/mainpage/TopicList';
 import BookList from '../components/mainpage/BookList';
 import './MainPage.scss';
+
 
 const Mainpage = () => {
   const { Moralis, account, isAuthenticated, user } = useMoralis();

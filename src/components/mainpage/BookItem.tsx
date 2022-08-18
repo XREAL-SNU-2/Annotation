@@ -4,7 +4,7 @@ import { Input } from 'web3uikit';
 import BookInfo from './BookInfo';
 import Modal from './Modal';
 import './BookItem.scss';
-
+import useStore from "../../pages/Zustand";
 type book = {
   title: string;
   info: string;
@@ -14,9 +14,15 @@ type book = {
 
 const BookItem = ({ title, info, thumbnail, writer }: book) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  const onClickToggleModal = useCallback(() => {
+  
+  const {pdfFileName, setPdfFileName} = useStore();
+  
+  const onClickToggleModal = useCallback(async() => {
+    await setPdfFileName(name);
+    // console.log(pdfFileName);
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
+
   return (
     <>
       <div>

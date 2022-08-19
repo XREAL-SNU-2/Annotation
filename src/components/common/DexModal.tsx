@@ -10,10 +10,10 @@ const DexModal = ({
   children,
 }: PropsWithChildren<ModalDefaultType>) => {
   return (
-    <div className="modalContainer">
-      <div className="dialogBox">{children}</div>
+    <div className="dexModalContainer">
+      <div className="dexDialogBox">{children}</div>
       <div
-        className="backdrop"
+        className="dexBackdrop"
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
 

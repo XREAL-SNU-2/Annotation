@@ -1,0 +1,118 @@
+.dexModalContainer {
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  left: 0px;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+}
+.dexBackdrop {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.dexDialogBox {
+  margin-right: 30px;
+  margin-left: auto;
+  margin-top: 60px;
+  margin-bottom: auto;
+  width: 200px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
+  box-sizing: border-box;
+  background-color: white;
+  z-index: 10000;
+}
+
+.dexContainer {
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.dexTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+  font-size: auto;
+  font-weight: 900;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: solid #eeeeee 2px;
+}
+.swapBox {
+  padding-top: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.fromInfo {
+  display: flex;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 3px;
+}
+.toInfo {
+  display: flex;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 3px;
+}
+.fromTokenName {
+  font-weight: 600;
+  font-size: 13px;
+}
+.toTokenName {
+  font-weight: 600;
+  font-size: 13px;
+}
+.fromTokenBalance {
+  font-size: 10px;
+  margin-left: auto;
+}
+.toTokenBalance {
+  font-size: 10px;
+  margin-left: auto;
+}
+.fromToken {
+  width: 90%;
+  margin: auto;
+}
+.toToken {
+  margin: auto;
+  width: 90%;
+}
+.changeButton {
+  width: 40px;
+  height: 40px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+.priceInfo {
+  font-size: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.swapButton {
+  border-radius: 0.5rem;
+  margin-top: 10px;
+  display: flex;
+  margin: auto;
+  width: 90%;
+  height: 35px;
+  background-color: #fbfd56;
+  justify-content: center;
+  align-items: center;
+  border: solid #111111 1px;
+}

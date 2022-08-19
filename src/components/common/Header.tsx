@@ -36,8 +36,15 @@ const Header = () => {
             </div>
           ) : (
             <>
+              <div>
+                {isOpenModal && (
+                  <DexModal onClickToggleModal={onClickToggleModal}>
+                    <InAppDex />
+                  </DexModal>
+                )}
+              </div>
               <button className="buyTokenButton" onClick={onClickToggleModal}>
-                <InAppDex />
+                Buy Anno Token
               </button>
               <Link to="/profile">
                 <div className="profile">

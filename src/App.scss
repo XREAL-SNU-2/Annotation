@@ -1,0 +1,21 @@
+$headerHeight: 50px;
+$backgroundColor: #eeeeee;
+
+.mainWindow {
+  position: absolute;
+  top: $headerHeight;
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+}
+
+.headerContainer {
+  position: sticky;
+  top: 0px;
+  height: $headerHeight;
+  width: 100%;
+  display: flex;
+  background-color: $backgroundColor;
+  justify-content: space-between;
+  z-index: 100;
+}

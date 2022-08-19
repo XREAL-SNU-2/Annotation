@@ -1,0 +1,37 @@
+$backgroundColor: #eeeeee;
+$borderRadius: 5px;
+$headerHeight: 50px;
+
+.mainpage {
+  // background-color: $backgroundColor;
+  width: 80vw;
+  height: 100vh;
+}
+.topicHeader {
+  position: relative;
+  margin-bottom: 10px;
+  font-size: medium;
+  font-weight: 800;
+}
+.topicBox {
+  position: fixed;
+  display: block;
+  top: $headerHeight + 5px;
+  width: 200px;
+  background-color: $backgroundColor;
+  height: 100%;
+  z-index: 99;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+.topicImage {
+}
+.topicText {
+}
+
+.bookBox {
+  position: relative;
+  padding: 30px;
+  left: 200px;
+  width: 100%;
+}

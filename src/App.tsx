@@ -25,7 +25,6 @@ const App = () => {
           </Routes>
         </div>
       </div>
-      )
     </>
   );
 };

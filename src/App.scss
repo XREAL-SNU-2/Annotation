@@ -10,7 +10,7 @@ $backgroundColor: #eeeeee;
 }
 
 .headerContainer {
-  position: sticky;
+  position: fixed;
   top: 0px;
   height: $headerHeight;
   width: 100%;

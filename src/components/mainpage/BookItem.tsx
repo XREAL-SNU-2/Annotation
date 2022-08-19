@@ -27,11 +27,11 @@ const BookItem = ({ title, info, thumbnail, writer }: book) => {
           </Modal>
         )}
       </div>
-      <div className="dialogButton" onClick={onClickToggleModal}>
+      <button className="dialogButton" onClick={onClickToggleModal}>
         <img className="bookCover" src={thumbnail} />
         <div className="bookName">{title}</div>
         <div className="writer">{writer}</div>
-      </div>
+      </button>
     </>
   );
 };

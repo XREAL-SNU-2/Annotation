@@ -15,8 +15,9 @@ import PostingWritingPage from 'components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
-import {useMoralis} from 'react-moralis';
+import {useMoralis, useWeb3ExecuteFunction} from 'react-moralis';
 import {useLocation} from 'react-router-dom';
+import {uploadNote} from 'functions/uplaodNote';
 
 interface Note {
     id: number;
@@ -48,6 +49,7 @@ const PdfPage = () => {
     const [notePropsCancel, setNotePropsCancel] = React.useState<any>();
     const pdfFileName = (location.state as CustomizedState).pdfName;
     const {Moralis} = useMoralis();
+    const contractProcessor = useWeb3ExecuteFunction();
     React.useEffect(()=>{
         async function getPDF() {
             try{
@@ -183,7 +185,6 @@ const PdfPage = () => {
 
     const addNote = (highlightAreas: any, selectedText: any, cancel: any) => {
         if (noteValue !== '') {
-            alert("ASE");
             const note: Note = {
                 id: ++noteId,
                 content: noteValue,
@@ -218,6 +219,15 @@ const PdfPage = () => {
                     </div>
                     <button onClick = {() => {
                         addNote(notePropsHighLightArea, notePropsSelectedText, notePropsCancel);
+                        
+                        uploadNote(Moralis, contractProcessor, {
+                            noteDetail: "ASD",
+                            noteWriter: "ASD",
+                            notePosition: "QWE",
+                            noteGoods: 12,
+                            noteBads: 23,
+                            notePrice: 24
+                        });
                         setWritingMode(false);
                     }}></button>
                     <button onClick={() => {

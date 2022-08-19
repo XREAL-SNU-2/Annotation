@@ -18,7 +18,7 @@ const BookItem = ({ title, info, thumbnail, writer }: book) => {
   const {pdfFileName, setPdfFileName} = useStore();
   
   const onClickToggleModal = useCallback(async() => {
-    await setPdfFileName(name);
+    await setPdfFileName(title);
     // console.log(pdfFileName);
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);

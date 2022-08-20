@@ -8,8 +8,8 @@ import Uploadpage from './pages/UploadPage';
 import { useMoralis } from 'react-moralis';
 import { ConnectButton, Icon } from 'web3uikit';
 import './App.scss';
-import ProfilePage from 'pages/ProfilePage';
-import UpdatePDF from 'components/UpdatePDF';
+import ProfilePage from './pages/ProfilePage';
+import UpdatePDF from './components/UpdatePDF';
 
 const App = () => {
   const { isAuthenticated, Moralis } = useMoralis();

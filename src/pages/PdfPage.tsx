@@ -18,13 +18,13 @@ import {
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import PostingWritingPage from 'components/mainpage/PostWritingPage';
+import PostingWritingPage from '../components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
 import { useLocation } from 'react-router-dom';
-import { uploadNote } from 'functions/uplaodNote';
+import { uploadNote } from '../functions/uplaodNote';
 
 interface Note {
   id: number;

@@ -1,5 +1,3 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
@@ -73,6 +71,5 @@ module.exports = {
     contentBase: './',
     publicPath: '/dist',
   },
-  plugins: [new MiniCssExtractPlugin()],
   ignoreWarnings: [/Failed to parse source map/],
 };

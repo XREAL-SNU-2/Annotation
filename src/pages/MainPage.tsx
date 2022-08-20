@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { TextArea, Icon, Loading } from 'web3uikit';
 import { useState, useEffect, useCallback } from 'react';

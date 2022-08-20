@@ -6,7 +6,10 @@ import PdfPage from './pages/PdfPage';
 import Header from './components/common/Header';
 import Uploadpage from './pages/UploadPage';
 import { useMoralis } from 'react-moralis';
+import { ConnectButton, Icon } from 'web3uikit';
 import './App.scss';
+import ProfilePage from 'pages/ProfilePage';
+import UpdatePDF from 'components/UpdatePDF';
 
 const App = () => {
   const { isAuthenticated, Moralis } = useMoralis();
@@ -22,6 +25,10 @@ const App = () => {
             <Route path="/" element={<Mainpage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path={`/pdfpage`} element={<PdfPage />} />
+            <Route
+              path="/test/updatepdf"
+              element={<UpdatePDF></UpdatePDF>}
+            ></Route>
           </Routes>
         </div>
       </div>

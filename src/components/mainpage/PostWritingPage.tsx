@@ -74,9 +74,9 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
                 </div>
               );
             },
-            execute: (state, api) => {
-              // console.log('>>>>>>update>>>>>', state)
-            },
+            // execute: (state, api)  => {
+            // console.log('>>>>>>update>>>>>', state)
+            // },
             buttonProps: { 'aria-label': 'Insert title' },
           }),
           commands.divider,

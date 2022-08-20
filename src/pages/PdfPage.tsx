@@ -18,7 +18,7 @@ import {
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import PostingWritingPage from 'components/mainpage/PostWritingPage';
+import PostingWritingPage from '../components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';

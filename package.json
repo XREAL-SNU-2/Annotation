@@ -97,7 +97,7 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.10.0"
   },
-  "resolutions": {
-    "mini-css-extract-plugin": "2.4.5"
+  "optionalDependencies": {
+    "fsevents": "*"
   }
 }

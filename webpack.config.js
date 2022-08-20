@@ -1,3 +1,5 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
@@ -67,6 +69,8 @@ module.exports = {
       },
     ],
   },
+
+  plugins: [new HtmlWebpackPlugin()],
   devServer: {
     port: 8080,
     contentBase: './',

@@ -71,8 +71,5 @@ module.exports = {
     contentBase: './',
     publicPath: '/dist',
   },
-  optionalDependencies: {
-    fsevents: '*',
-  },
   ignoreWarnings: [/Failed to parse source map/],
 };

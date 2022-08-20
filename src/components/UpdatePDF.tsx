@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
-import { useMoralis } from 'react-moralis';
+import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
+import hash from 'object-hash';
 
 function UpdatePDF() {
     const { Moralis } = useMoralis();
+    const user = Moralis.User.current();
+    const contractProcessor = useWeb3ExecuteFunction();
     const [noteDetail, setNoteDetail] = React.useState<string>();
     const [username, setUsername] = React.useState<string>();
     const [notePosition, setNotePosition] = React.useState<string>();
@@ -10,6 +13,60 @@ function UpdatePDF() {
     const [noteBads, setNoteBads] = React.useState<number>();
     const [notePrice, setNotePrice] = React.useState<number>();
 
+    const [noteHash, setNoteHash] = React.useState<string>();
+
+    const [error, setError] = React.useState<string>();
+
+    React.useEffect(() => {
+        setNoteHash(hash({"noteDetail": noteDetail, "username": username, "notePosition": notePosition }));
+    }, [noteDetail, username, notePosition]);
+
+    const uploadContract = async () => {
+        const web3 = await Moralis.enableWeb3();
+        const options = {
+            contractAddress: "0x2b13bF58F20eDa732837b5F06eA04eB9224730c7",
+            functionName: "addNote",
+            abi: [{
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "noteDetail",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "noteHash",
+                        "type": "string"
+                    }
+                ],
+                "name": "addNote",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            }],
+            params: {
+                noteDetail: noteDetail,
+                noteHash: noteHash
+            },
+            msgValue: Moralis.Units.ETH(0.00001)
+        }
+
+        await contractProcessor.fetch({
+            params: options,
+            onSuccess: () => {
+                updatePDF();
+            },
+            onError: (error) => {
+                setError(error.message);
+            }
+        })
+    }
+
+    const errorMessage = React.useMemo(() => {
+        return (
+            <div>{error}</div>
+        )
+    }, [error]);
 
     const updatePDF = async () => {
         const PDF = Moralis.Object.extend("PDFs");
@@ -38,12 +95,15 @@ function UpdatePDF() {
         if(notePrice) {
             note.set("notePrice", notePrice);
         }
+        if(noteHash) {
+            note.set("noteHash", noteHash);
+        }
 
         await note.save().then(async (savedNote: any) => {
             if(!PDFNoteIds) {
-                PDFNoteIds = [savedNote.id!];
+                PDFNoteIds = [savedNote.noteHash!];
             } else {
-                PDFNoteIds = [...PDFNoteIds, savedNote.id!];
+                PDFNoteIds = [...PDFNoteIds, savedNote.noteHash!];
             }
             PDFDetails?.set("noteIds", PDFNoteIds);
 
@@ -65,7 +125,8 @@ function UpdatePDF() {
             <input value={noteBads} onChange = {(e) => setNoteBads(Number(e.target.value))}></input>
             <div>notePrice</div>
             <input value={notePrice} onChange = {(e) => setNotePrice(Number(e.target.value))}></input>
-            <button onClick={updatePDF}>save</button>
+            {errorMessage}
+            <button onClick={uploadContract}>save</button>
         </>
     )
 }

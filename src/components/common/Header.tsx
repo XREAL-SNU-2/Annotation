@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useState, useCallback } from 'react';
 import { Icon, ConnectButton } from 'web3uikit';
 import { useMoralis } from 'react-moralis';
+import DexModal from './DexModal';
+import InAppDex from './InAppDex';
 import './Header.scss';
 
 const Header = () => {
@@ -11,6 +14,12 @@ const Header = () => {
       await authenticate().then(() => window.location.reload());
     }
   };
+
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+  const onClickToggleModal = useCallback(async () => {
+    setOpenModal(!isOpenModal);
+  }, [isOpenModal]);
 
   return (
     <>
@@ -27,14 +36,16 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <div
-                className="buyTokenButton"
-                onClick={() => {
-                  <></>;
-                }}
-              >
-                Buy Anno Token
+              <div>
+                {isOpenModal && (
+                  <DexModal onClickToggleModal={onClickToggleModal}>
+                    <InAppDex />
+                  </DexModal>
+                )}
               </div>
+              <button className="buyTokenButton" onClick={onClickToggleModal}>
+                Buy Anno Token
+              </button>
               <Link to="/profile">
                 <div className="profile">
                   <img

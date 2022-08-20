@@ -8,7 +8,10 @@ const TopicItem = ({ topic }: topicProps) => {
   return (
     <>
       <div className="topicContainer">
-        <img className="topicImage" src="../images/topicLogo.png" />
+        <img
+          className="topicImage"
+          src={require('../../images/topicLogo.png')}
+        />
         <div className="topicText">{topic}</div>
       </div>
     </>

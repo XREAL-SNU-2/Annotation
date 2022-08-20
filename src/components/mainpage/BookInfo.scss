@@ -30,44 +30,53 @@
   background-color: white;
   z-index: 10000;
 }
-.infoContainer {
+.pdfInfoContainer {
   display: flex;
   width: 95%;
   height: 70%;
 }
-.title {
+.pdfTitle {
   color: black;
   font-weight: 800;
   font-size: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.info {
+.pdfInfo {
   height: 80%;
   width: 100%;
   flex-direction: row;
   padding-left: 50px;
 }
-.thumbnail {
+.pdfThumbnail {
   box-shadow: 5px 5px 10px grey;
   margin-left: 50px;
   margin-right: auto;
   margin-top: 25px;
   height: 100%;
 }
-.infoText {
+.pdfInfoText {
   width: 100%;
   padding-right: 5%;
   text-overflow: ellipsis;
 }
-.buyPDFButton {
-  background-color: black;
+.buyPDFButtonContainer {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 80%;
+  margin-bottom: 40px;
+}
+.buyPDFButton {
+  background-color: black;
   border-radius: 0.5rem;
-  width: 85%;
+  width: 100%;
   height: 50px;
   color: white;
-  margin-bottom: 40px;
+  margin: auto;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

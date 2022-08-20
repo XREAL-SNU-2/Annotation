@@ -9,11 +9,13 @@ import './MainPage.scss';
 
 const Mainpage = () => {
   const { Moralis, account, isAuthenticated, user } = useMoralis();
-  try {
-    const user = Moralis.User.current();
-  } catch (error) {
-    <></>;
-  }
+  useEffect(() => {
+    try {
+      const user = Moralis.User.current();
+    } catch (error) {
+      <></>;
+    }
+  });
   const [PDFArr, setPDFArr] = useState<any[]>();
 
   useEffect(() => {

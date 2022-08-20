@@ -10,15 +10,18 @@ type book = {
 const Bookinfo = ({ title, info, thumbnail }: book) => {
   return (
     <>
-      <div className="infoContainer">
-        <img src={thumbnail} className="thumbnail" />
-        <div className="info">
-          <div className="title">{title}</div>
-          <div className="infoText">{info}</div>
+      <div className="pdfInfoContainer">
+        <img src={thumbnail} className="pdfThumbnail" />
+        <div className="pdfInfo">
+          <div className="pdfTitle">{title}</div>
+          <div className="pdfInfoText">{info}</div>
         </div>
       </div>
-
-      <Link to="/pdfpage" state={{ pdfName: title }}>
+      <Link
+        to="/pdfpage"
+        state={{ pdfName: title }}
+        className="buyPDFButtonContainer"
+      >
         <div className="buyPDFButton">USE 15 TOKEN TO READ</div>
       </Link>
     </>

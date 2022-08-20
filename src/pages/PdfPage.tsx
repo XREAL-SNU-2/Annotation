@@ -59,13 +59,13 @@ const PdfPage = () => {
       try {
         const pdfs = Moralis.Object.extend('PDFs');
         const query = new Moralis.Query(pdfs);
-        console.log(pdfFileName + 'this is pdf name');
+        // console.log(pdfFileName + 'this is pdf name');
         query.equalTo('title', pdfFileName);
         const results = await query.find();
 
         setPdfFileUrl(results[0].get('PDFFile'));
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
 

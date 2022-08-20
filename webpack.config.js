@@ -1,3 +1,5 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
@@ -33,18 +35,31 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/i,
-        use: ['css-loader'],
-        exclude: /node_modules/,
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+        ],
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: ['css-loader', 'sass-loader'],
-        exclude: /node_modules/,
+        test: /.(sass|scss)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' },
+        ],
       },
       {
-        test: /\.(png|jpg)$/,
-        use: ['file-loader'],
+        test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader',
+        options: {
+          name: '[hash].[ext]',
+          limit: 10000,
+        },
       },
       {
         enforce: 'pre',
@@ -58,4 +73,6 @@ module.exports = {
     contentBase: './',
     publicPath: '/dist',
   },
+  plugins: [new MiniCssExtractPlugin()],
+  ignoreWarnings: [/Failed to parse source map/],
 };

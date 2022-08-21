@@ -7,7 +7,13 @@ type topicProps = {
 const TopicItem = ({ topic }: topicProps) => {
   return (
     <>
-      <div className="TopicItem">{topic}</div>
+      <div className="topicContainer">
+        <img
+          className="topicImage"
+          src={require('../../images/topicLogo.png')}
+        />
+        <div className="topicText">{topic}</div>
+      </div>
     </>
   );
 };

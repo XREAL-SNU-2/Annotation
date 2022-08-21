@@ -1,5 +1,6 @@
 $backgroundColor: #eeeeee;
 $borderRadius: 5px;
+$headerHeight: 50px;
 
 .mainpage {
   // background-color: $backgroundColor;
@@ -15,14 +16,19 @@ $borderRadius: 5px;
 .topicBox {
   position: fixed;
   display: block;
-  top: 50px;
+  top: $headerHeight + 5px;
   width: 200px;
-  border-right: 1px solid rgb(63, 63, 63);
   background-color: $backgroundColor;
   height: 100%;
   z-index: 99;
   padding-left: 10px;
   padding-top: 10px;
+}
+.topicImage {
+  width: 20px;
+  height: 20px;
+}
+.topicText {
 }
 
 .bookBox {

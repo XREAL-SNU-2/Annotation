@@ -48,9 +48,11 @@
 .afterLogin {
   display: flex;
 }
-.logout {
-  width: 100px;
+.buyTokenButton {
+  width: auto;
   height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 0.5rem;
   background-color: #fbfd56;
   font-weight: 700px;

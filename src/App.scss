@@ -10,11 +10,12 @@ $backgroundColor: #eeeeee;
 }
 
 .headerContainer {
-  position: sticky;
+  position: fixed;
   top: 0px;
   height: $headerHeight;
   width: 100%;
   display: flex;
+  background-color: $backgroundColor;
   justify-content: space-between;
-  box-shadow: 4px;
+  z-index: 100;
 }

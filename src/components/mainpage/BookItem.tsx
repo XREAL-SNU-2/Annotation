@@ -4,7 +4,7 @@ import { Input } from 'web3uikit';
 import BookInfo from './BookInfo';
 import Modal from './Modal';
 import './BookItem.scss';
-import useStore from "../../pages/Zustand";
+
 type book = {
   title: string;
   info: string;
@@ -14,12 +14,7 @@ type book = {
 
 const BookItem = ({ title, info, thumbnail, writer }: book) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  
-  const {pdfFileName, setPdfFileName} = useStore();
-  
-  const onClickToggleModal = useCallback(async() => {
-    await setPdfFileName(title);
-    // console.log(pdfFileName);
+  const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
@@ -32,11 +27,11 @@ const BookItem = ({ title, info, thumbnail, writer }: book) => {
           </Modal>
         )}
       </div>
-      <div className="dialogButton" onClick={onClickToggleModal}>
+      <button className="dialogButton" onClick={onClickToggleModal}>
         <img className="bookCover" src={thumbnail} />
         <div className="bookName">{title}</div>
         <div className="writer">{writer}</div>
-      </div>
+      </button>
     </>
   );
 };

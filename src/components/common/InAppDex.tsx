@@ -89,7 +89,7 @@ const InAppDex = () => {
           </div>
           <div className="tokenBox">
             <TextInput
-              onChangeText={text => fromTokenChangeHandler(text)}
+              onChangeText={(text: string) => fromTokenChangeHandler(text)}
               style={{ textAlign: 'right' }}
             />
           </div>

@@ -18,6 +18,8 @@ const Uploadpage = () => {
   const [info, setInfo] = useState<string>();
   const [title, setTitle] = useState<string>();
   const [topic, setTopic] = useState<string>();
+  const [writer, setWriter] = useState<string>();
+  const [price, setPrice] = useState<number>();
   const [thumbnail, setThumbnail] = useState<File>();
   const contractProcessor = useWeb3ExecuteFunction();
 
@@ -49,6 +51,8 @@ const Uploadpage = () => {
     newPDF.set('title', title);
     newPDF.set('info', info);
     newPDF.set('topic', topic);
+    newPDF.set('writer', writer);
+    newPDF.set('price', price);
     newPDF.set('uploaderAcc', user?.attributes.ethAddress);
     newPDF.set('uploaderName', user?.attributes.username);
 
@@ -89,6 +93,13 @@ const Uploadpage = () => {
 
         <TextArea
           label=""
+          name="writer"
+          value="writer"
+          onChange={e => setWriter(e.target.value)}
+          width="95%"
+        ></TextArea>
+        <TextArea
+          label=""
           name="pdfTopic"
           value="pdfTopic"
           onChange={e => setTopic(e.target.value)}
@@ -99,6 +110,13 @@ const Uploadpage = () => {
           name="pdfInfo"
           value="pdfInfo"
           onChange={e => setInfo(e.target.value)}
+          width="95%"
+        ></TextArea>
+        <TextArea
+          label=""
+          name="price"
+          value="1"
+          onChange={e => setPrice(+e.target.value)}
           width="95%"
         ></TextArea>
         {selectedThumbnail && (

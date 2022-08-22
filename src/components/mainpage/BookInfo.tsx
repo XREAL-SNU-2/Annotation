@@ -22,7 +22,7 @@ const Bookinfo = ({ title, info, thumbnail }: book) => {
         state={{ pdfName: title }}
         className="buyPDFButtonContainer"
       >
-        <div className="buyPDFButton">USE 15 TOKEN TO READ</div>
+        <div className="buyPDFButton">READ THIS</div>
       </Link>
     </>
   );

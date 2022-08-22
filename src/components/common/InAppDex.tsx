@@ -15,9 +15,6 @@ const InAppDex = () => {
   const [toTokenBalance, setToTokenBalance] = useState<number>(0.1);
   const [fromTokenName, setFromTokenName] = useState<string>('ANNO');
   const [toTokenName, setToTokenName] = useState<string>('MATIC');
-  useEffect(() => {
-    alert(usrAddress);
-  });
   const fromTokenChangeHandler = (text: string) => {
     setFromToken(text);
   };

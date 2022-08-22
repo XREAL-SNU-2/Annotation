@@ -33,7 +33,7 @@
 .pdfInfoContainer {
   display: flex;
   width: 95%;
-  height: 70%;
+  height: 75%;
 }
 .pdfTitle {
   color: black;
@@ -47,6 +47,7 @@
   width: 100%;
   flex-direction: row;
   padding-left: 50px;
+  padding-top: 10px;
 }
 .pdfThumbnail {
   box-shadow: 5px 5px 10px grey;
@@ -56,9 +57,11 @@
   height: 100%;
 }
 .pdfInfoText {
-  width: 100%;
-  padding-right: 5%;
-  text-overflow: ellipsis;
+  height: 100%;
+  overflow: scroll;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .buyPDFButtonContainer {
   margin-top: auto;

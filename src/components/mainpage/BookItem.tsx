@@ -30,7 +30,7 @@ const BookItem = ({ title, info, thumbnail, writer }: book) => {
       <button className="dialogButton" onClick={onClickToggleModal}>
         <img className="bookCover" src={thumbnail} />
         <div className="bookName">{title}</div>
-        <div className="writer">{writer}</div>
+        <div className="writer">by {writer}</div>
       </button>
     </>
   );

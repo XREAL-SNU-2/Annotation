@@ -383,7 +383,7 @@ const PdfPage = () => {
     >
       <div className="pdf-wrapper">
         <div className="pdf-content">
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
             <Viewer fileUrl={pdffileUrl} plugins={[highlightPluginInstance]} />
           </Worker>
         </div>

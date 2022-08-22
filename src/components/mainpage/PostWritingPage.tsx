@@ -22,10 +22,12 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         borderRight: '1px solid rgba(0, 0, 0, 0.3)',
         width: '100%',
         overflow: 'auto',
+        color: "#fff"
       }}
     >
       <MDEditor
         className="markdown-writer"
+        style = {{width: "100%", minWidth: "0px"}}
         value={markdownValue}
         height={500}
         visibleDragbar={false}

@@ -35,6 +35,8 @@ interface Note {
   good: number;
   bad: number;
   author: string;
+  noteHash: string;
+  buyers: string[];
 }
 
 interface CustomizedState {
@@ -47,7 +49,7 @@ const PdfPage = () => {
   const [writingMode, setWritingMode] = React.useState<boolean>(false);
   const [noteValue, setNoteValue] = React.useState<string>('');
   const [notePrice, setNotePrice] = React.useState<number>(0);
-  const [noteAuthor, setNoteAuthor] = React.useState<string>('');
+  const [userName, setUserName] = React.useState<string>('');
   const [pdffileUrl, setPdfFileUrl] = React.useState<string>(
     'https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf',
   );
@@ -61,6 +63,8 @@ const PdfPage = () => {
   const pdfFileName = (location.state as CustomizedState).pdfName;
   const { Moralis } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
+  Moralis.start({appId: "rMCHTBGYR9zSvyLy9AhXq943Kkq1u7ADKoZjOLIs", serverUrl: "https://frer4xw5obeo.usemoralis.com:2053/server"});
+  const user = Moralis.User.current();
   React.useEffect(() => {
     async function getPDF() {
       try {
@@ -76,7 +80,35 @@ const PdfPage = () => {
       }
     }
 
+    const getNotes = async () => {
+      const notes = Moralis.Object.extend("Notes");
+      const query = new Moralis.Query(notes);
+      const _notesOfPDF = await query.equalTo("pdfFileName", pdfFileName);
+      const notesOfPDF = await _notesOfPDF.find();
+
+      const noteList: Note[] = [];
+      notesOfPDF.map((note: any, key: number) => {
+        const newNote = {
+          id: key,
+          content: note.get("noteDetail"),
+          highlightAreas: note.get("notePosition"),
+          quote: note.get("noteSelectedText"),
+          price: note.get("notePrice"),
+          good: note.get("noteGoods"),
+          bad: note.get("noteBads"),
+          author: note.get("noteWriter"),
+          noteHash: note.get("noteHash"),
+          buyers: note.get("buyers")
+        }
+        noteList.push(newNote);
+      })
+
+      setNotes(noteList);
+    }
+
     getPDF();
+    getNotes();
+    setUserName(user?.get("name"));
   }, []);
 
   let noteId = notes.length;
@@ -95,7 +127,7 @@ const PdfPage = () => {
   };
 
   const OnAuthorValueChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
-    setNoteAuthor(event?.target.value as string);
+    setUserName(event?.target.value as string);
   };
 
   const renderHighlightTarget = (props: RenderHighlightTargetProps) => (
@@ -144,12 +176,12 @@ const PdfPage = () => {
           price: notePrice,
           good: 0,
           bad: 0,
-          author: noteAuthor,
+          author: userName,
+          noteHash: "",
+          buyers: []
         };
         setNotes(notes.concat([note]));
         props.cancel();
-        setNoteAuthor('');
-        setNotePrice(0);
       }
     };
     return (
@@ -211,12 +243,12 @@ const PdfPage = () => {
         price: notePrice,
         good: 0,
         bad: 0,
-        author: noteAuthor,
+        author: userName,
+        noteHash: "",
+        buyers: []
       };
       setNotes(notes.concat([note]));
       cancel;
-      setNoteAuthor('');
-      setNotePrice(0);
     }
   };
 
@@ -226,11 +258,11 @@ const PdfPage = () => {
         <div className="writeNoteContainer">
           <div>
             <text>Noted By </text>
-            <input></input>
+            <input value={userName}></input>
           </div>
           <div>
-            <text>제목: </text>
-            <input></input>
+            <text>가격: </text>
+            <input value={notePrice} onChange = {(e) => {setNotePrice(Number(e.target.value))}}></input>
           </div>
           <div>
             <PostingWritingPage
@@ -244,18 +276,17 @@ const PdfPage = () => {
                 notePropsSelectedText,
                 notePropsCancel,
               );
-
               uploadNote(Moralis, contractProcessor, {
-                noteDetail: 'ASD',
-                noteWriter: 'ASD',
-                notePosition: 'QWE',
-                noteGoods: 12,
-                noteBads: 23,
-                notePrice: 24,
+                noteDetail: noteValue,
+                noteWriter: userName,
+                notePosition: notePropsHighLightArea,
+                notePrice: notePrice,
+                pdfFileName: pdfFileName,
+                noteSelectedText: notePropsSelectedText
               });
               setWritingMode(false);
             }}
-          ></button>
+          >업로드</button>
           <button
             onClick={() => {
               notePropsCancel;
@@ -272,6 +303,8 @@ const PdfPage = () => {
     notePropsSelectedText,
     notePropsCancel,
     noteValue,
+    notePrice,
+    userName
   ]);
 
   const writtenNoteContainer = React.useMemo(() => {
@@ -279,56 +312,121 @@ const PdfPage = () => {
       <>
         {notes.length === 0 && <div>There is no note</div>}
         {notes.map(note => {
-          return (
-            <div
-              key={note.id}
-              className="note-box"
-              style={{
-                cursor: 'pointer',
-                padding: '8px',
-              }}
-            >
-              <div className="note-content">
-                <div
-                  // Jump to the associated highlight area
-                  onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
-                >
-                  <blockquote
-                    style={{
-                      borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
-                      fontSize: '.75rem',
-                      lineHeight: 1.5,
-                      margin: '0px 0px 8px 0px',
-                      paddingLeft: '8px',
-                      textAlign: 'justify',
-                    }}
+          if(note.buyers.includes(user?.get("username"))) {
+            return (
+              <div
+                key={note.id}
+                className="note-box"
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px',
+                }}
+              >
+                <div className="note-content">
+                  <div
+                    // Jump to the associated highlight area
+                    onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
                   >
-                    {note.quote}
-                    <text className="note-authorName">
-                      Noted by {note.author}
-                    </text>
-                  </blockquote>
-                  <div>
-                    <MDEditor.Markdown
-                      source={note.content}
-                      style={{ backgroundColor: '#FFFFFF', height: 190 }}
-                    />
+                    <blockquote
+                      style={{
+                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
+                        fontSize: '.75rem',
+                        lineHeight: 1.5,
+                        margin: '0px 0px 8px 0px',
+                        paddingLeft: '8px',
+                        textAlign: 'justify',
+                      }}
+                    >
+                      {note.quote.substring(0, 45)}
+                      <text className="note-authorName">
+                        Noted by {note.author}
+                      </text>
+                    </blockquote>
+                    <div>
+                      <MDEditor.Markdown
+                        source={note.content.substring(0, 200)}
+                        style={{ backgroundColor: '#FFFFFF', height: 190 }}
+                      />
+                    </div>
                   </div>
+                  <text className="note-boldword">Good</text>
+                  <text className="note-mideumword">{note.good}</text>
+                  <text className="note-boldword">Bad</text>
+                  <text className="note-mideumword">{note.bad}</text>
+                  <button className="buy-button" >
+                    View Note
+                  </button>
                 </div>
-                <text className="note-boldword">Good</text>
-                <text className="note-mideumword">{note.good}</text>
-                <text className="note-boldword">Bad</text>
-                <text className="note-mideumword">{note.bad}</text>
-                <button className="buy-button">
-                  Pay {note.price} Anno token
-                </button>
               </div>
-            </div>
-          );
+            );
+          } else {
+            return (
+              <div
+                key={note.id}
+                className="note-box"
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px',
+                }}
+              >
+                <div className="note-content">
+                  <div
+                    // Jump to the associated highlight area
+                    onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
+                  >
+                    <blockquote
+                      style={{
+                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
+                        fontSize: '.75rem',
+                        lineHeight: 1.5,
+                        margin: '0px 0px 8px 0px',
+                        paddingLeft: '8px',
+                        textAlign: 'justify',
+                      }}
+                    >
+                      {note.quote.substring(0, 45)}
+                      <text className="note-authorName">
+                        Noted by {note.author}
+                      </text>
+                    </blockquote>
+                    <div>
+                      <MDEditor.Markdown
+                        source={note.content.substring(0, 200)}
+                        style={{ backgroundColor: '#FFFFFF', height: 190 }}
+                      />
+                    </div>
+                  </div>
+                  <text className="note-boldword">Good</text>
+                  <text className="note-mideumword">{note.good}</text>
+                  <text className="note-boldword">Bad</text>
+                  <text className="note-mideumword">{note.bad}</text>
+                  <button className="buy-button" onClick = {() => {
+                    buyNote(note.noteHash);
+                  }}>
+                    Pay {note.price} Anno token
+                  </button>
+                </div>
+              </div>
+            );
+          }
         })}
       </>
     );
-  }, [notes]);
+  }, [notes, user]);
+
+  const buyNote = async (noteHash: string)=> {
+      const notes = Moralis.Object.extend("Notes");
+      const query = new Moralis.Query(notes);
+      const _noteOfPDF = await query.equalTo("noteHash", noteHash);
+      const noteOfPDF = await _noteOfPDF.find();
+      const buyingNote = noteOfPDF[0];
+
+      const currentBuyers = buyingNote.get("buyers");
+      currentBuyers.push(user?.get("username"));
+      buyingNote.set("buyers", currentBuyers);
+
+      buyingNote.save();
+  }
 
   const jumpToNote = (note: Note) => {
     if (noteEles.has(note.id)) {

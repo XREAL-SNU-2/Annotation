@@ -18,13 +18,13 @@ import {
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import PostingWritingPage from 'components/mainpage/PostWritingPage';
+import PostingWritingPage from '../components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
 import { useLocation } from 'react-router-dom';
-import { uploadNote } from 'functions/uplaodNote';
+import { uploadNote } from '../functions/uplaodNote';
 
 interface Note {
   id: number;
@@ -383,7 +383,7 @@ const PdfPage = () => {
     >
       <div className="pdf-wrapper">
         <div className="pdf-content">
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
             <Viewer fileUrl={pdffileUrl} plugins={[highlightPluginInstance]} />
           </Worker>
         </div>

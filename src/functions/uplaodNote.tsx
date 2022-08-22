@@ -1,14 +1,27 @@
 import React, { PureComponent } from 'react';
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
 import hash from 'object-hash';
+import { HighlightArea } from '@react-pdf-viewer/highlight';
 
 export interface Note {
     noteDetail: string;
     noteWriter: string;
-    notePosition: string;
+    notePosition: HighlightArea[];
     noteGoods: number;
     noteBads: number;
     notePrice: number;
+    pdfFileName: string;
+    noteSelectedText: string;
+    buyers: string[];
+}
+
+export interface NoteInformation {
+    noteDetail: string;
+    noteWriter: string;
+    notePosition: HighlightArea[];
+    notePrice: number;
+    pdfFileName: string;
+    noteSelectedText: string;
 }
 
 const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
@@ -31,13 +44,17 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
         newNote.set("noteBads", note.noteBads);
         newNote.set("notePrice", note.notePrice);
         newNote.set("noteHash", noteHash);
+        newNote.set("buyers", []);
+        newNote.set("pdfFileName", note.pdfFileName);
+        newNote.set("noteSelectedText", note.noteSelectedText);
+        newNote.set("noteWriter", note.noteWriter);
     }
 
     await newNote.save().then(async (savedNote: any) => {
         if(!PDFNoteIds) {
-            PDFNoteIds = [savedNote.noteHash!];
+            PDFNoteIds = [noteHash!];
         } else {
-            PDFNoteIds = [...PDFNoteIds, savedNote.noteHash!];
+            PDFNoteIds = [...PDFNoteIds, noteHash!];
         }
         PDFDetails?.set("noteIds", PDFNoteIds);
 
@@ -45,7 +62,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
     });
 };
 
-const uploadNoteToContract = async (Moralis: any, contractProcessor: any,note: Note, noteHash: string) => {
+const uploadNoteToContract = async (Moralis: any, contractProcessor: any, note: any, noteHash: string) => {
     // const [contractError, setContractError] = React.useState<string>();
     const web3 = await Moralis.enableWeb3();
     const options = {
@@ -88,9 +105,20 @@ const uploadNoteToContract = async (Moralis: any, contractProcessor: any,note: N
     })
 };
 
-export const uploadNote = (Moralis: any, contractProcessor: any, note: Note): void => {
+export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation: NoteInformation): void => {
     const user = Moralis.User.current();
-    const noteHash = hash({"noteDetail": note.noteDetail, "noteWriter": note.noteWriter, "notePosition": note.notePosition });
+    const noteHash = hash({"noteDetail": noteInformation.noteDetail, "noteWriter": noteInformation.noteWriter, "notePosition": noteInformation.notePosition });
+    const note: Note = {
+        noteDetail: noteInformation.noteDetail,
+        noteWriter: noteInformation.noteWriter,
+        notePosition: noteInformation.notePosition,
+        noteGoods: 0,
+        noteBads: 0,
+        notePrice: noteInformation.notePrice,
+        pdfFileName: noteInformation.pdfFileName,
+        noteSelectedText: noteInformation.noteSelectedText,
+        buyers: []
+    }
     
     uploadNoteToContract(Moralis, contractProcessor, note, noteHash);
 };

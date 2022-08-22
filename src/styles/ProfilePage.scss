@@ -73,16 +73,28 @@ div {
 }
 .userInformation .userIntroduction .name {
     line-height: 31px;
-
 }
 .userInformation .userIntroduction .personalInformationContainer {
     display: flex;
     margin-top: 75px;
+    flex-wrap: wrap;
 }
 .userInformation .userIntroduction .personalInformationContainer .name {
     font-size: 35px;
     font-weight: 600;
     line-height: 42px;
+    width: 100%;
+}
+.userInformation .userIntroduction .personalInformationContainer .email,
+.userInformation .userIntroduction .personalInformationContainer .phoneNumber {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 35px;
+    width: 100%;
+    margin-top: 33px;
+}
+.userInformation .userIntroduction .personalInformationContainer .phoneNumber {
+    margin-top: 41px;
 }
 .userInformation .tokenContainer {
     width: 409px;
@@ -162,6 +174,10 @@ div {
     box-sizing: border-box;
     padding: 72px 61px;
     overflow: scroll;
+    &.pdf {
+        padding-top: 57px;
+        padding-bottom: 70px;
+    }
 }
 .InformationContainer .InformationList .InformationListScroll {
     display: flex;

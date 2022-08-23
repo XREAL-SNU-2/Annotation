@@ -1,12 +1,22 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
-
+import color from 'web3uikit/dist/styles/colors';
+import './PostWritingPage.scss';
+import { text } from 'stream/consumers';
 interface PostValue {
   setPostValue: Dispatch<SetStateAction<string>>;
 }
 
 const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
   const [markdownValue, setmarkdownValue] = useState('Write Something!!');
+  
+  const textArea = () => {
+      return (
+        <div style={{color: "#FFFFFF"}}>
+          아 이게 대신나오는건가?
+        </div>
+      );
+  } //여기에 onChange관련 값을 넣으면 색 바꾸는 건 완성이라고 보인다.
 
   const onTextChange = (
     value?: string,
@@ -21,18 +31,19 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
       style={{
         borderRight: '1px solid rgba(0, 0, 0, 0.3)',
         width: '100%',
-        overflow: 'auto',
-        color: "#fff"
+        overflow: 'auto'
       }}
+      data-color-mode = "dark"
     >
       <MDEditor
-        className="markdown-writer"
+        
         style = {{width: "100%", minWidth: "0px"}}
         value={markdownValue}
         height={500}
         visibleDragbar={false}
         onChange={onTextChange}
         preview="edit"
+        renderTextarea={textArea}
         commands={[commands.codeEdit, commands.codePreview]}
         extraCommands={[
           commands.group(

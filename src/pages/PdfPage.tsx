@@ -22,9 +22,10 @@ import PostingWritingPage from '../components/mainpage/PostWritingPage';
 import MDEditor from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
-import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
+import { useMoralis, useWeb3ExecuteFunction,useWeb3Transfer } from 'react-moralis';
 import { useLocation } from 'react-router-dom';
 import { uploadNote } from '../functions/uplaodNote';
+import {buyNote} from '../functions/buyNote';
 
 interface Note {
   id: number;
@@ -60,11 +61,15 @@ const PdfPage = () => {
   const [notePropsSelectedText, setNotePropsSelectedText] =
     React.useState<any>();
   const [notePropsCancel, setNotePropsCancel] = React.useState<any>();
+  const [noteAuthor, setNoteAuthor] = React.useState<string>("");
   const pdfFileName = (location.state as CustomizedState).pdfName;
   const { Moralis } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
+  const transferProcessor = useWeb3Transfer();
   Moralis.start({appId: "rMCHTBGYR9zSvyLy9AhXq943Kkq1u7ADKoZjOLIs", serverUrl: "https://frer4xw5obeo.usemoralis.com:2053/server"});
   const user = Moralis.User.current();
+  
+
   React.useEffect(() => {
     async function getPDF() {
       try {
@@ -75,10 +80,12 @@ const PdfPage = () => {
         const results = await query.find();
 
         setPdfFileUrl(results[0].get('PDFFile'));
+
       } catch (error) {
         // console.error(error);
       }
     }
+
 
     const getNotes = async () => {
       const notes = Moralis.Object.extend("Notes");
@@ -312,7 +319,7 @@ const PdfPage = () => {
       <>
         {notes.length === 0 && <div>There is no note</div>}
         {notes.map(note => {
-          if(note.buyers.includes(user?.get("username"))) {
+          if(note.buyers.includes(user?.id as string)) {
             return (
               <div
                 key={note.id}
@@ -400,8 +407,21 @@ const PdfPage = () => {
                   <text className="note-mideumword">{note.good}</text>
                   <text className="note-boldword">Bad</text>
                   <text className="note-mideumword">{note.bad}</text>
-                  <button className="buy-button" onClick = {() => {
-                    buyNote(note.noteHash);
+                  <button className="buy-button" onClick = {async () => {
+                    console.log("Btn Clicked");
+                    const userObject = Moralis.Object.extend("_User");
+                    const userQuery = new Moralis.Query(userObject);
+
+                    const selectedNote = Moralis.Object.extend("Notes");
+                    //const noteQuery = new Moralis.Query(selectedNote);
+                    //noteQuery.equalTo("noteHash", )
+                    console.log(note.author);
+                    userQuery.equalTo("name", note.author);
+                    const results = await userQuery.find();
+                    console.log(results[0])
+                    //const writerAddress = results[0].get("ethAddress");
+                    //const buyerAddress = Moralis.User.current()?.get("ethAddress");
+                    buyNote(Moralis, transferProcessor, {noteObjectId: "yHBnViGvT85DyjFi0tMjLZYP", notePrice: note.price, noteWriterAddress: "0x9a532ec3347b40c01ab8e9fdd056cc3e6fcabae7", buyerAddress: "0x350d338ac0fcbe5dd3a40523e022d8584e0502e4"});
                   }}>
                     Pay {note.price} Anno token
                   </button>
@@ -414,7 +434,7 @@ const PdfPage = () => {
     );
   }, [notes, user]);
 
-  const buyNote = async (noteHash: string)=> {
+  /*const buyNote = async (noteHash: string)=> {
       const notes = Moralis.Object.extend("Notes");
       const query = new Moralis.Query(notes);
       const _noteOfPDF = await query.equalTo("noteHash", noteHash);
@@ -426,7 +446,7 @@ const PdfPage = () => {
       buyingNote.set("buyers", currentBuyers);
 
       buyingNote.save();
-  }
+  }*/
 
   const jumpToNote = (note: Note) => {
     if (noteEles.has(note.id)) {

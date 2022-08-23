@@ -57,7 +57,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
             PDFNoteIds = [...PDFNoteIds, noteHash!];
         }
         PDFDetails?.set("noteIds", PDFNoteIds);
-
+        
         await PDFDetails?.save();
     });
 };

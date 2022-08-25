@@ -26,7 +26,7 @@ import { useMoralis, useWeb3ExecuteFunction,useWeb3Transfer } from 'react-morali
 import { useLocation } from 'react-router-dom';
 import { uploadNote } from '../functions/uplaodNote';
 import {buyNote} from '../functions/buyNote';
-
+import hash from 'object-hash';
 interface Note {
   id: number;
   content: string;
@@ -54,7 +54,7 @@ const PdfPage = () => {
   const [pdffileUrl, setPdfFileUrl] = React.useState<string>(
     'https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf',
   );
-  //Moralis Pdf
+  //기본 pdf로 아무거나 넣어둔 건데 이걸 백서로 바꿔보면 어떨까 싶음.
   const location = useLocation();
   const [notePropsHighLightArea, setNotePropsHighLightArea] =
     React.useState<any>();
@@ -68,7 +68,7 @@ const PdfPage = () => {
   const transferProcessor = useWeb3Transfer();
   Moralis.start({appId: "rMCHTBGYR9zSvyLy9AhXq943Kkq1u7ADKoZjOLIs", serverUrl: "https://frer4xw5obeo.usemoralis.com:2053/server"});
   const user = Moralis.User.current();
-  
+  const [userEthAddress, setUserEthAddress] = React.useState<string>("");
 
   React.useEffect(() => {
     async function getPDF() {
@@ -80,7 +80,6 @@ const PdfPage = () => {
         const results = await query.find();
 
         setPdfFileUrl(results[0].get('PDFFile'));
-
       } catch (error) {
         // console.error(error);
       }
@@ -97,7 +96,7 @@ const PdfPage = () => {
       notesOfPDF.map((note: any, key: number) => {
         const newNote = {
           id: key,
-          content: note.get("noteDetail"),
+          content: note.get("noteDetail"), //note.content = noteDetail
           highlightAreas: note.get("notePosition"),
           quote: note.get("noteSelectedText"),
           price: note.get("notePrice"),
@@ -113,9 +112,20 @@ const PdfPage = () => {
       setNotes(noteList);
     }
 
+    const getUserAddress = async() =>{
+      const userObject = Moralis.Object.extend("_User");
+      const userQuery = new Moralis.Query(userObject);
+      const currentUserId = user?.id;
+      userQuery.equalTo("objectId", currentUserId);
+      const result = await userQuery.find();
+      console.log(result[0].get("ethAddress"));
+      setUserEthAddress(result[0].get("ethAddress"));
+    }
+
     getPDF();
     getNotes();
     setUserName(user?.get("name"));
+    getUserAddress();
   }, []);
 
   let noteId = notes.length;
@@ -286,6 +296,7 @@ const PdfPage = () => {
               uploadNote(Moralis, contractProcessor, {
                 noteDetail: noteValue,
                 noteWriter: userName,
+                noteWriterAddress: userEthAddress,
                 notePosition: notePropsHighLightArea,
                 notePrice: notePrice,
                 pdfFileName: pdfFileName,
@@ -409,19 +420,22 @@ const PdfPage = () => {
                   <text className="note-mideumword">{note.bad}</text>
                   <button className="buy-button" onClick = {async () => {
                     console.log("Btn Clicked");
-                    const userObject = Moralis.Object.extend("_User");
-                    const userQuery = new Moralis.Query(userObject);
-
                     const selectedNote = Moralis.Object.extend("Notes");
-                    //const noteQuery = new Moralis.Query(selectedNote);
-                    //noteQuery.equalTo("noteHash", )
-                    console.log(note.author);
-                    userQuery.equalTo("name", note.author);
-                    const results = await userQuery.find();
-                    console.log(results[0])
+                    const currentNoteHash = hash({"noteDetail": note.content, "noteWriter": note.author, "notePosition": note.highlightAreas });
+                    //console.log(currentNoteHash);
+                    console.log(currentNoteHash);
+                    const noteQuery = new Moralis.Query(selectedNote);
+                    noteQuery.equalTo("noteHash", currentNoteHash);
+                    const results = await noteQuery.find();
+                    console.log(results[0]);
+                    const noteWriterEthAddress = results[0].get("noteWriterAddress");
+                    const noteId = results[0].id;
+                    console.log(noteId);
+                    console.log(noteWriterEthAddress);
                     //const writerAddress = results[0].get("ethAddress");
+                    //console.log(writerAddress);
                     //const buyerAddress = Moralis.User.current()?.get("ethAddress");
-                    buyNote(Moralis, transferProcessor, {noteObjectId: "yHBnViGvT85DyjFi0tMjLZYP", notePrice: note.price, noteWriterAddress: "0x9a532ec3347b40c01ab8e9fdd056cc3e6fcabae7", buyerAddress: "0x350d338ac0fcbe5dd3a40523e022d8584e0502e4"});
+                    buyNote(Moralis, transferProcessor, {noteObjectId: noteId, notePrice: note.price, noteWriterAddress: noteWriterEthAddress, buyerAddress: userEthAddress});
                   }}>
                     Pay {note.price} Anno token
                   </button>

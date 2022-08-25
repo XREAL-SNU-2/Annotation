@@ -10,13 +10,6 @@ interface PostValue {
 const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
   const [markdownValue, setmarkdownValue] = useState('Write Something!!');
   
-  const textArea = () => {
-      return (
-        <div style={{color: "#FFFFFF"}}>
-          아 이게 대신나오는건가?
-        </div>
-      );
-  } //여기에 onChange관련 값을 넣으면 색 바꾸는 건 완성이라고 보인다.
 
   const onTextChange = (
     value?: string,
@@ -33,7 +26,6 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         width: '100%',
         overflow: 'auto'
       }}
-      data-color-mode = "dark"
     >
       <MDEditor
         
@@ -43,7 +35,6 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         visibleDragbar={false}
         onChange={onTextChange}
         preview="edit"
-        renderTextarea={textArea}
         commands={[commands.codeEdit, commands.codePreview]}
         extraCommands={[
           commands.group(

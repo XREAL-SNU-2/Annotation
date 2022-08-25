@@ -6,6 +6,7 @@ import { HighlightArea } from '@react-pdf-viewer/highlight';
 export interface Note {
     noteDetail: string;
     noteWriter: string;
+    noteWriterAddress: string;
     notePosition: HighlightArea[];
     noteGoods: number;
     noteBads: number;
@@ -18,6 +19,7 @@ export interface Note {
 export interface NoteInformation {
     noteDetail: string;
     noteWriter: string;
+    noteWriterAddress: string;
     notePosition: HighlightArea[];
     notePrice: number;
     pdfFileName: string;
@@ -48,6 +50,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
         newNote.set("pdfFileName", note.pdfFileName);
         newNote.set("noteSelectedText", note.noteSelectedText);
         newNote.set("noteWriter", note.noteWriter);
+        newNote.set("noteWriterAddress", note.noteWriterAddress);
     }
 
     await newNote.save().then(async (savedNote: any) => {
@@ -111,6 +114,7 @@ export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation
     const note: Note = {
         noteDetail: noteInformation.noteDetail,
         noteWriter: noteInformation.noteWriter,
+        noteWriterAddress: noteInformation.noteWriterAddress,
         notePosition: noteInformation.notePosition,
         noteGoods: 0,
         noteBads: 0,

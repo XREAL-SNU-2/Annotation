@@ -37,7 +37,25 @@ const Mainpage = () => {
       <div className="mainpage">
         <div className="topicBox">
           <div className="topicHeader">Topic </div>
-          <TopicList topics={['BlockChain', 'Math', 'Fine Art']} />
+          <TopicList
+            topics={[
+              'Arts',
+              'Astronomy',
+              'Biochemistry',
+              'BlockChain',
+              'Business',
+              'Chemistry',
+              'ComputerScience',
+              'EarthScience',
+              'Engineering',
+              'Immunology',
+              'Mathematics',
+              'Medicine',
+              'Neuroscience',
+              'Physics',
+              'Math',
+            ]}
+          />
         </div>
         <div className="bookBox">
           {!PDFArr ? (

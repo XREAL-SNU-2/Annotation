@@ -45,15 +45,15 @@ const Mainpage = () => {
               'BlockChain',
               'Business',
               'Chemistry',
-              'ComputerScience',
-              'EarthScience',
+              'Computer Science',
+              'Earth Science',
               'Engineering',
               'Immunology',
               'Mathematics',
               'Medicine',
               'Neuroscience',
               'Physics',
-              'Math',
+              'Social Science',
             ]}
           />
         </div>

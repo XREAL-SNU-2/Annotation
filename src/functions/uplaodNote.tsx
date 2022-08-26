@@ -47,7 +47,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
 
     if(note) {
         newNote.set("noteTitle", note.noteTitle);
-        newNote.set("noteDetail", note.noteDetail.substring(0, 200));
+        newNote.set("noteDetail", note.noteDetail);
         newNote.set("notePosition", note.notePosition);
         newNote.set("noteGoods", note.noteGoods);
         newNote.set("noteBads", note.noteBads);

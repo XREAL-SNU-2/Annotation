@@ -24,123 +24,365 @@
 .bluebox {
   background-color: aqua;
 }
-
-.view-and-write {
-  display: flex;
-  height: 1200px;
-  margin-bottom: 100px;
+.pdfPage {
+    width: 100%;
+    height: 100%;
 }
 
-.markdown {
-  min-width: 500px;
-  height: 600px;
+.pdf-wrapper{
+    width: 1100px;
+    height: calc(100% - 10px);
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 35px;
+    // position: absolute;
+    // left: 1.82%;
+    // right: 35.89%;
+    // top: 1.19%;
+    // bottom: 0%;
+    
+    background-color: #2A2A2A;
+    border: 2px solid #000000;
+    border-radius: 15px;
+
+    padding: 51px 213px;
+    padding-bottom: 0px;
 }
 
-span {
-  margin-top: 3px;
+.pdf-content{
+    position: absolute;
+    // left: 9%;
+    // right: 9%;
+    // top: 4.91%;
+    // bottom: 0%;
+    left: 248px;
+    top: 61px;
+    width: 673px;
+    height: calc(100% - 51px);
+    
+    background: #FFFFFF;
+    box-shadow: 8px 0px 20px rgba(0, 0, 0, 0.35), -8px 0px 20px rgba(0, 0, 0, 0.35);
 }
 
-.pdf-wrapper {
-  box-sizing: border-box;
-  position: absolute;
-  left: 1.82%;
-  right: 35.89%;
-  top: 1.19%;
-  bottom: 0%;
+.post-list{
+    box-sizing: border-box;
+    display: inline-block;
+    margin-left: 34px;
 
-  background-color: #2a2a2a;
-  border: 2px solid #000000;
-  border-radius: 15px;
+    // position: absolute;
+    // left: 65.89%;
+    // right: 1.72%;
+    // top: 1.19%;
+    // bottom: 0%;
+
+    width: 718px;
+    height: calc(100% - 10px);
+
+    background: #E0E0E0;
+    border: 2px solid #BDBDBD;
+    border-radius: 15px;
+    overflow: scroll;
+
+    padding: 28px 32px;
 }
 
-.pdf-content {
-  position: absolute;
-  left: 9%;
-  right: 9%;
-  top: 4.91%;
-  bottom: 0%;
-
-  background: #ffffff;
-  box-shadow: 8px 0px 20px rgba(0, 0, 0, 0.35),
-    -8px 0px 20px rgba(0, 0, 0, 0.35);
+.note-box{
+    background: #FFFFFF;
+    width: 100%;
+    height: 356px;
+    margin-bottom: 25px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+    padding: 0px;
+}
+.note-boldword{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    margin-right: 3px;
+}
+.note-mideumword{
+    margin-left: 9px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
 }
 
-.post-list {
-  box-sizing: border-box;
+.note-content{
+    width: 100%;
+    position: relative;
+    padding: 0px;
+    padding-top: 84px;
+    .label {
+        width: 146px;
+        height: 25px;
+        position: absolute;
+        top: 13px;
+        left: 0px;
+        background-color: rgba(3, 239, 133, 1);
+    }
+    .note-authorName {
+        position: absolute;
+        top: 31px;
+        right: 49px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
 
-  position: absolute;
-  left: 65.89%;
-  right: 1.72%;
-  top: 1.19%;
-  bottom: 0%;
+        color: #010101;
+    }
+    .title {
+        margin-left: 45px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 35px;
+        line-height: 42px;
+        /* identical to box height */
 
-  background: #e0e0e0;
-  border: 2px solid #bdbdbd;
-  border-radius: 15px;
-  overflow: scroll;
+        letter-spacing: 0.02em;
+
+        color: #000000;
+    }
+    .detail {
+        margin-top: 25px;
+        margin-left: 45px;
+        .wmde-markdown {
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 40px;
+            /* or 143% */
+    
+    
+            color: #010101; 
+        }
+    }
+    .informationContainer {
+        display: flex;
+        margin: 0px 46px;
+        margin-top: 25px;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .informationContainer .goodBad {
+        display: flex;
+        align-items: center;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        /* identical to box height */
+
+        color: #010101;
+    }
 }
 
-.note-box {
-  //position: absolute;
-
-  background: #ffffff;
-  height: 267px;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 20px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-}
-.note-boldword {
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  margin-right: 3px;
-}
-.note-mideumword {
-  margin-right: 20px;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 21px;
+.buy-button{
+    display: inline-block;
+    margin: 0 5px;
+    margin-top: 2px;
+    float: right;
+    background: #000000;
+    border: 1px solid #000000;
+    border-radius: 13px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #FFFFFF;
+    width: 232px;
+    height: 23px;
 }
 
-.note-content {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 10px;
+.writeNoteContainer, .viewNoteContainer {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+    padding-top: 84px;
+    .label {
+        width: 146px;
+        height: 25px;
+        background-color: #03EF85;
+        position: absolute;
+        top: 13px;
+        left: 0px;
+    }
+    .author {
+        width: 182px;
+        height: 20px;
+        position: absolute;
+        top: 31px;
+        right: 49px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #757575; 
+    }
+    .title {
+        height: 42px;
+        box-sizing: border-box;
+        margin-left: 45px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 35px;
+        line-height: 42px;
+
+        letter-spacing: 0.02em;
+        border: none;
+        outline: none;
+
+        color: #000000;
+
+        &.empty {
+            border-bottom: 1px #000 solid;
+        }
+    }
+    .writeContainer {
+        margin-top: 37px;
+        margin-left: 33px;
+        margin-right: 74px;
+    }
+    .priceContainer {
+        margin-top: 47px;
+        margin-left: 26px;
+        margin-right: 49px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .priceContainer .priceText {
+        display: inline-flex;
+        align-items: center;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 36px;
+        /* identical to box height */
+
+
+        color: #010101;
+        input {
+            width: 55px;
+            height: 46px;
+            outline: none;
+            border: none;
+            background-color: #E0E0E0;
+            margin: 0px 10px;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 36px;
+            /* identical to box height */
+
+
+            color: #010101;
+        }
+    }
+    .priceContainer .submit {
+        display: inline-block;
+        width: 137px;
+        height: 46px;
+
+        background: #000000;
+        border-radius: 15px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 36px;
+        /* identical to box height */
+
+
+        color: #FFFFFF;
+    }
+    .cancel {
+        background-color: transparent;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 25px;
+    }
+    .w-md-editor, .wmde-markdown {
+        background-color: #F2F0F0;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 38px;
+        /* or 146% */
+
+
+        color: #010101;
+    }
+    .w-md-editor-toolbar {
+        background-color: #F2F0F0;
+    }
 }
 
-.buy-button {
-  display: inline-block;
-  margin: 0 5px;
-  margin-top: 2px;
-  float: right;
-  background: #000000;
-  border: 1px solid #000000;
-  border-radius: 13px;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
+.viewNoteContainer {
+    .detailContainer {
+        margin-top: 37px;
+        margin-left: 33px;
+        margin-right: 74px;
+        background: #F2F0F0;
+        border-radius: 23px;
+        height: calc(100% - 200px);
+        padding: 21px 29px;
+    }
+    .wmde-markdown {
+        background-color: transparent;
+    }
+    .goodBadContainer {
+        display: flex;
+        justify-content: left;
+        margin: 40px 130px 0px 70px;
+    }
+    .goodBadContainer .goodContainer, .goodBadContainer .badContainer {
+        display: flex;
+        align-items: center;
+        button {
+            width: 175px;
+            height: 46px;
 
-  color: #ffffff;
-  width: 232px;
-  height: 23px;
-}
+            color: #fff;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 36px;
+            background: #000000;
+            border-radius: 15px;
+        }
+        .goods, .bads {
+            margin-left: 10px;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 36px;
+            /* identical to box height */
 
-.note-authorName {
-  display: inline-block;
-  margin: 0 5px;
-  margin-top: 2px;
-  float: right;
-}
 
-.writeNoteContainer {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 15px;
+            color: #000000;
+        }
+    }
+    .goodBadContainer .badContainer {
+        margin-left: 44px;
+    }
 }

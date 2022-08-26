@@ -6,7 +6,7 @@ $backgroundColor: #eeeeee;
   top: $headerHeight;
   background-color: white;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 50px);
 }
 
 .headerContainer {

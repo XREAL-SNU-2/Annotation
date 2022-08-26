@@ -3,6 +3,8 @@ import MDEditor, { commands } from '@uiw/react-md-editor';
 import color from 'web3uikit/dist/styles/colors';
 import './PostWritingPage.scss';
 import { text } from 'stream/consumers';
+import '../../styles/Else.scss';
+
 interface PostValue {
   setPostValue: Dispatch<SetStateAction<string>>;
 }
@@ -24,7 +26,8 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
       style={{
         borderRight: '1px solid rgba(0, 0, 0, 0.3)',
         width: '100%',
-        overflow: 'auto'
+        overflow: 'auto',
+        borderRadius: "23px",
       }}
     >
       <MDEditor
@@ -36,6 +39,7 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         onChange={onTextChange}
         preview="edit"
         commands={[commands.codeEdit, commands.codePreview]}
+        color="#ffffff"
         extraCommands={[
           commands.group(
             [

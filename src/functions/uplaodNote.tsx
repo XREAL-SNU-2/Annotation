@@ -4,19 +4,22 @@ import hash from 'object-hash';
 import { HighlightArea } from '@react-pdf-viewer/highlight';
 
 export interface Note {
+    noteTitle: string;
     noteDetail: string;
     noteWriter: string;
     noteWriterAddress: string;
     notePosition: HighlightArea[];
-    noteGoods: number;
-    noteBads: number;
+    noteGoods: string[];
+    noteBads: string[];
     notePrice: number;
     pdfFileName: string;
     noteSelectedText: string;
     buyers: string[];
+    labelColor: string;
 }
 
 export interface NoteInformation {
+    noteTitle: string;
     noteDetail: string;
     noteWriter: string;
     noteWriterAddress: string;
@@ -24,6 +27,7 @@ export interface NoteInformation {
     notePrice: number;
     pdfFileName: string;
     noteSelectedText: string;
+    labelColor: string;
 }
 
 const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
@@ -40,6 +44,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
     const newNote = new Note();
 
     if(note) {
+        newNote.set("noteTitle", note.noteTitle);
         newNote.set("noteDetail", note.noteDetail);
         newNote.set("notePosition", note.notePosition);
         newNote.set("noteGoods", note.noteGoods);
@@ -51,6 +56,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
         newNote.set("noteSelectedText", note.noteSelectedText);
         newNote.set("noteWriter", note.noteWriter);
         newNote.set("noteWriterAddress", note.noteWriterAddress);
+        newNote.set("labelColor", note.labelColor);
     }
 
     await newNote.save().then(async (savedNote: any) => {
@@ -112,16 +118,18 @@ export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation
     const user = Moralis.User.current();
     const noteHash = hash({"noteDetail": noteInformation.noteDetail, "noteWriter": noteInformation.noteWriter, "notePosition": noteInformation.notePosition });
     const note: Note = {
+        noteTitle: noteInformation.noteTitle,
         noteDetail: noteInformation.noteDetail,
         noteWriter: noteInformation.noteWriter,
         noteWriterAddress: noteInformation.noteWriterAddress,
         notePosition: noteInformation.notePosition,
-        noteGoods: 0,
-        noteBads: 0,
+        noteGoods: [],
+        noteBads: [],
         notePrice: noteInformation.notePrice,
         pdfFileName: noteInformation.pdfFileName,
         noteSelectedText: noteInformation.noteSelectedText,
-        buyers: []
+        buyers: [],
+        labelColor: noteInformation.labelColor,
     }
     
     uploadNoteToContract(Moralis, contractProcessor, note, noteHash);

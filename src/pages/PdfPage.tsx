@@ -19,7 +19,7 @@ import {
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import PostingWritingPage from '../components/mainpage/PostWritingPage';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import './PdfPage.scss';
 import { Input } from 'web3uikit';
 import {
@@ -31,30 +31,39 @@ import { useLocation } from 'react-router-dom';
 import { uploadNote } from '../functions/uplaodNote';
 import { buyNote } from '../functions/buyNote';
 import hash from 'object-hash';
+import ViewNoteContainer from 'components/ViewNoteContainer';
 interface Note {
   id: number;
   content: string;
   highlightAreas: HighlightArea[];
   quote: string;
   price: number;
-  good: number;
-  bad: number;
+  good: string[];
+  bad: string[];
   author: string;
   noteHash: string;
   buyers: string[];
+  title: string;
+  labelColor: string;
 }
 
 interface CustomizedState {
   pdfName: string;
 }
 
+const labelColors = ["rgba(3, 239, 133, 1)", "rgba(255, 153, 226, 1)", "rgba(3, 168, 239, 1)"];
+
 const PdfPage = () => {
   const [message, setMessage] = React.useState('');
   const [notes, setNotes] = React.useState<Note[]>([]);
-  const [writingMode, setWritingMode] = React.useState<boolean>(false);
+  const [writtingMode, setWrittingMode] = React.useState<boolean>(false);
+  const [viewMode, setViewMode] = React.useState<boolean>(false);
+  const [selectedNote, setSelectedNote] = React.useState<Note>();
   const [noteValue, setNoteValue] = React.useState<string>('');
+  const [noteTitle, setNoteTitle] = React.useState<string>('');
   const [notePrice, setNotePrice] = React.useState<number>(0);
   const [userName, setUserName] = React.useState<string>('');
+  const [newLabelColorIndex, setNewLabelColorIndex] = React.useState<number>(0);
   const [pdffileUrl, setPdfFileUrl] = React.useState<string>(
     'https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf',
   );
@@ -102,18 +111,22 @@ const PdfPage = () => {
       notesOfPDF.map((note: any, key: number) => {
         const newNote = {
           id: key,
-          content: note.get('noteDetail'), //note.content = noteDetail
-          highlightAreas: note.get('notePosition'),
-          quote: note.get('noteSelectedText'),
-          price: note.get('notePrice'),
-          good: note.get('noteGoods'),
-          bad: note.get('noteBads'),
-          author: note.get('noteWriter'),
-          noteHash: note.get('noteHash'),
-          buyers: note.get('buyers'),
-        };
+          content: note.get("noteDetail"),
+          highlightAreas: note.get("notePosition"),
+          quote: note.get("noteSelectedText"),
+          price: note.get("notePrice"),
+          good: note.get("noteGoods"),
+          bad: note.get("noteBads"),
+          author: note.get("noteWriter"),
+          noteHash: note.get("noteHash"),
+          buyers: note.get("buyers"),
+          title: note.get("noteTitle"),
+          labelColor: note.get("labelColor"),
+        }
         noteList.push(newNote);
-      });
+      })
+      const _newLabelColorIndex = labelColors.indexOf(noteList[noteList.length - 1].labelColor);
+      setNewLabelColorIndex((_newLabelColorIndex + 1) % 3);
 
       setNotes(noteList);
     };
@@ -139,10 +152,10 @@ const PdfPage = () => {
   const noteEles: Map<number, HTMLElement> = new Map();
 
   const OnWritingMode = (event?: React.MouseEvent<HTMLButtonElement>) => {
-    setWritingMode(true);
+    setWrittingMode(true);
   };
   const OnReadingMode = (event?: React.MouseEvent<HTMLButtonElement>) => {
-    setWritingMode(false);
+    setWrittingMode(false);
   };
 
   const OnPriceValueChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +185,9 @@ const PdfPage = () => {
           <Button
             onClick={() => {
               props.toggle();
-              setWritingMode(true);
+              setNoteTitle("");
+              setNotePrice(0);
+              setWrittingMode(true);
             }}
           >
             <MessageIcon />
@@ -197,11 +212,13 @@ const PdfPage = () => {
           highlightAreas: props.highlightAreas,
           quote: props.selectedText,
           price: notePrice,
-          good: 0,
-          bad: 0,
+          good: [],
+          bad: [],
           author: userName,
-          noteHash: '',
+          noteHash: "",
           buyers: [],
+          title: "",
+          labelColor: ""
         };
         setNotes(notes.concat([note]));
         props.cancel();
@@ -256,7 +273,7 @@ const PdfPage = () => {
     );
   };
 
-  const addNote = (highlightAreas: any, selectedText: any, cancel: any) => {
+  const addNote = (highlightAreas: any, selectedText: any, cancel: any, labelColor: string) => {
     if (noteValue !== '') {
       const note: Note = {
         id: ++noteId,
@@ -264,11 +281,13 @@ const PdfPage = () => {
         highlightAreas: highlightAreas,
         quote: selectedText,
         price: notePrice,
-        good: 0,
-        bad: 0,
+        good: [],
+        bad: [],
         author: userName,
-        noteHash: '',
+        noteHash: "",
         buyers: [],
+        title: noteTitle,
+        labelColor: labelColor
       };
       setNotes(notes.concat([note]));
       cancel;
@@ -279,32 +298,32 @@ const PdfPage = () => {
     return (
       <>
         <div className="writeNoteContainer">
-          <div>
-            <text>Noted By </text>
-            <input value={userName}></input>
+          <div className="label" style={{"backgroundColor": labelColors[newLabelColorIndex]}}></div>
+          <div className="author">
+            <text>Noted By {userName}</text>
           </div>
-          <div>
-            <text>가격: </text>
-            <input
-              value={notePrice}
-              onChange={e => {
-                setNotePrice(Number(e.target.value));
-              }}
-            ></input>
-          </div>
-          <div>
+          <input type="text" className={"title" + ((noteTitle === "") ? " empty" : "")} value={noteTitle} onChange = {(e) => setNoteTitle(e.target.value)} />
+          <div className="writeContainer">
             <PostingWritingPage
               setPostValue={setNoteValue}
             ></PostingWritingPage>
-          </div>
-          <button
+          </div >
+          <div className="priceContainer">
+            <div className="priceText">
+              {"I NEED "}
+              <input type="text" className="price" value = {notePrice} onChange = {(e) => setNotePrice(Number(e.target.value))} />
+              {" TOKEN"}
+            </div>
+            <button className="submit"
             onClick={() => {
               addNote(
                 notePropsHighLightArea,
                 notePropsSelectedText,
                 notePropsCancel,
+                labelColors[newLabelColorIndex]
               );
               uploadNote(Moralis, contractProcessor, {
+                noteTitle: noteTitle,
                 noteDetail: noteValue,
                 noteWriter: userName,
                 noteWriterAddress: userEthAddress,
@@ -312,20 +331,19 @@ const PdfPage = () => {
                 notePrice: notePrice,
                 pdfFileName: pdfFileName,
                 noteSelectedText: notePropsSelectedText,
+                labelColor: labelColors[newLabelColorIndex]
               });
-              setWritingMode(false);
+              setNewLabelColorIndex((newLabelColorIndex + 1) % 3);
+              setWrittingMode(false);
             }}
-          >
-            업로드
-          </button>
-          <button
+          >SUBMIT</button>
+          </div>
+          <button className="cancel"
             onClick={() => {
               notePropsCancel;
-              setWritingMode(false);
+              setWrittingMode(false);
             }}
-          >
-            취소
-          </button>
+          >{"<"}</button>
         </div>
       </>
     );
@@ -336,6 +354,7 @@ const PdfPage = () => {
     noteValue,
     notePrice,
     userName,
+    noteTitle
   ]);
 
   const writtenNoteContainer = React.useMemo(() => {
@@ -343,14 +362,14 @@ const PdfPage = () => {
       <>
         {notes.length === 0 && <div>There is no note</div>}
         {notes.map(note => {
-          if (note.buyers.includes(user?.id as string)) {
+            const good = note.good.length;
+            const bad = note.bad.length;
             return (
               <div
                 key={note.id}
                 className="note-box"
                 style={{
                   cursor: 'pointer',
-                  padding: '8px',
                 }}
               >
                 <div className="note-content">
@@ -358,80 +377,31 @@ const PdfPage = () => {
                     // Jump to the associated highlight area
                     onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
                   >
-                    <blockquote
-                      style={{
-                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
-                        fontSize: '.75rem',
-                        lineHeight: 1.5,
-                        margin: '0px 0px 8px 0px',
-                        paddingLeft: '8px',
-                        textAlign: 'justify',
-                      }}
-                    >
-                      {note.quote.substring(0, 45)}
-                      <text className="note-authorName">
-                        Noted by {note.author}
-                      </text>
-                    </blockquote>
-                    <div>
+                    <div className="label" style = {{"backgroundColor": note.labelColor}}></div>
+                    <text className="note-authorName">
+                      Noted by {note.author}
+                    </text>
+                    <div className="title">{note.title}</div>
+                    <div className="detail">
                       <MDEditor.Markdown
                         source={note.content.substring(0, 200)}
-                        style={{ backgroundColor: '#FFFFFF', height: 190 }}
+                        style={{ backgroundColor: '#FFFFFF', height: 120 }}
                       />
                     </div>
                   </div>
-                  <text className="note-boldword">Good</text>
-                  <text className="note-mideumword">{note.good}</text>
-                  <text className="note-boldword">Bad</text>
-                  <text className="note-mideumword">{note.bad}</text>
-                  <button className="buy-button">View Note</button>
-                </div>
-              </div>
-            );
-          } else {
-            return (
-              <div
-                key={note.id}
-                className="note-box"
-                style={{
-                  cursor: 'pointer',
-                  padding: '8px',
-                }}
-              >
-                <div className="note-content">
-                  <div
-                    // Jump to the associated highlight area
-                    onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
-                  >
-                    <blockquote
-                      style={{
-                        borderLeft: '2px solid rgba(0, 0, 0, 0.2)',
-                        fontSize: '.75rem',
-                        lineHeight: 1.5,
-                        margin: '0px 0px 8px 0px',
-                        paddingLeft: '8px',
-                        textAlign: 'justify',
-                      }}
-                    >
-                      {note.quote.substring(0, 45)}
-                      <text className="note-authorName">
-                        Noted by {note.author}
-                      </text>
-                    </blockquote>
-                    <div>
-                      <MDEditor.Markdown
-                        source={note.content.substring(0, 200)}
-                        style={{ backgroundColor: '#FFFFFF', height: 190 }}
-                      />
+                  <div className="informationContainer">
+                    <div className="goodBad">
+                      <text className="note-boldword">Good</text>
+                      <text className="note-mideumword">{good}</text>
+                      <text className="note-boldword" style = {{"marginLeft": "51px"}}>Bad</text>
+                      <text className="note-mideumword">{bad}</text>
                     </div>
-                  </div>
-                  <text className="note-boldword">Good</text>
-                  <text className="note-mideumword">{note.good}</text>
-                  <text className="note-boldword">Bad</text>
-                  <text className="note-mideumword">{note.bad}</text>
-                  <button
-                    className="buy-button"
-                    onClick={async () => {
+                    {note.buyers.includes(user?.get("username")) ? <button className="buy-button" onClick={() => {
+                      setViewMode(true);
+                      setSelectedNote(note);
+                    }} >
+                      VIEW NOTE
+                    </button> : <button className="buy-button" onClick={async () => {
                       // console.log("Btn Clicked");
                       const selectedNote = Moralis.Object.extend('Notes');
                       const currentNoteHash = hash({
@@ -459,14 +429,14 @@ const PdfPage = () => {
                         noteWriterAddress: noteWriterEthAddress,
                         buyerAddress: userEthAddress,
                       });
-                    }}
-                  >
-                    Pay {note.price} Anno token
-                  </button>
+                    }}>
+                    USE {note.price} TOKEN TO READ
+                  </button>}
+                  </div>
                 </div>
               </div>
             );
-          }
+          
         })}
       </>
     );
@@ -494,8 +464,8 @@ const PdfPage = () => {
 
   const renderHighlights = (props: RenderHighlightsProps) => (
     <div>
-      {notes.map(note => (
-        <React.Fragment key={note.id}>
+      {notes.map((note, index: number) => (
+        <React.Fragment key={index}>
           {note.highlightAreas
             .filter(area => area.pageIndex === props.pageIndex)
             .map((area, idx) => (
@@ -504,7 +474,7 @@ const PdfPage = () => {
                 style={Object.assign(
                   {},
                   {
-                    background: 'yellow',
+                    background: note.labelColor,
                     opacity: 0.4,
                   },
                   props.getCssProperties(area, props.rotation),
@@ -529,14 +499,7 @@ const PdfPage = () => {
   const { jumpToHighlightArea } = highlightPluginInstance;
 
   return (
-    <div
-      style={{
-        border: '1px solid rgba(0, 0, 0, 0.3)',
-        display: 'flex',
-        height: '100%',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="pdfPage">
       <div className="pdf-wrapper">
         <div className="pdf-content">
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
@@ -544,8 +507,9 @@ const PdfPage = () => {
           </Worker>
         </div>
       </div>
-      {writingMode && <div className="post-list">{writeNoteContainer}</div>}
-      {!writingMode && <div className="post-list">{writtenNoteContainer}</div>}
+      {(!viewMode && writtingMode) && <div className="post-list">{writeNoteContainer}</div>}
+      {(!viewMode && !writtingMode) && <div className="post-list">{writtenNoteContainer}</div>}
+      {viewMode && <div className="post-list">{<ViewNoteContainer note = {selectedNote!} notePropsCancel = {notePropsCancel} setViewMode = {setViewMode}></ViewNoteContainer>}</div>}
     </div>
   );
 };

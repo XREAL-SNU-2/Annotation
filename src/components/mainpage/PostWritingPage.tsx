@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
+import '../../styles/Else.scss';
 
 interface PostValue {
   setPostValue: Dispatch<SetStateAction<string>>;
@@ -22,7 +23,7 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         borderRight: '1px solid rgba(0, 0, 0, 0.3)',
         width: '100%',
         overflow: 'auto',
-        color: "#fff"
+        borderRadius: "23px",
       }}
     >
       <MDEditor
@@ -34,6 +35,7 @@ const PostingWritingPage: React.FC<PostValue> = ({ setPostValue }) => {
         onChange={onTextChange}
         preview="edit"
         commands={[commands.codeEdit, commands.codePreview]}
+        color="#ffffff"
         extraCommands={[
           commands.group(
             [

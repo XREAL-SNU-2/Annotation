@@ -36,7 +36,6 @@ div.profile {
     width: 230px;
     height: 230px;
     border-radius: 50%;
-    background-color: #bbb;
 }
 .userInformation .userProfile .profileImageContainer .level {
     width: 91px;
@@ -46,6 +45,21 @@ div.profile {
     position: absolute;
     right: 6px;
     bottom: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+
+    color: #010101;
 }
 .userInformation .userProfile .name {
     margin-top: 39px;
@@ -179,12 +193,15 @@ div.profile {
     }
 }
 .InformationContainer .InformationList .InformationListScroll {
+    width: fit-content;
+    height: 100%;
     display: flex;
     align-items: center;
 }
 .InformationContainer .InformationList .InformationListScroll .informationContainer {
     position: relative;
     width: 245px;
+    height: 239px;
     margin-right: 72px;
 }
 .InformationContainer .InformationList .InformationListScroll .informationContainer .informationTitle {

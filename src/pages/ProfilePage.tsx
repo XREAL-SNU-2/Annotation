@@ -1,8 +1,11 @@
 import { Note } from 'functions/uplaodNote';
 import React from 'react';
 import { useMoralis } from 'react-moralis';
+import { Link } from 'react-router-dom';
 import Header from '../components/common/Header';
 import '../styles/ProfilePage.scss';
+import BookItem from '../components/mainpage/BookItem';
+import ProfileImage from '../images/ProfileImage.png';
 
 function ProfilePage() {
     const { Moralis } = useMoralis();
@@ -16,8 +19,7 @@ function ProfilePage() {
         const getPDFs = async () => {
             const PDF = Moralis.Object.extend("PDFs");
             const queryOfPDF = new Moralis.Query(PDF);
-            const _boughtPDFs = await queryOfPDF.equalTo("buyers", "MJ");
-            const boughtPDFs = await _boughtPDFs.find();
+            const boughtPDFs = await queryOfPDF.find();
             
             setBoughtPDFs(boughtPDFs);
         }
@@ -25,7 +27,7 @@ function ProfilePage() {
         const getBoughtNotes = async () => {
             const Note = Moralis.Object.extend("Notes");
             const queryOfNote = new Moralis.Query(Note);
-            const _boughtNotes = await queryOfNote.equalTo("buyers", "MJ");
+            const _boughtNotes = await queryOfNote.equalTo("buyers", user?.get("username"));
             const boughtNotes = await _boughtNotes.find();
 
             setBoughtNotes(boughtNotes);
@@ -34,8 +36,8 @@ function ProfilePage() {
         const getWrittenNotes = async () => {
             const Note = Moralis.Object.extend("Notes");
             const queryOfNote = new Moralis.Query(Note);
-            const _writtenNotes = await queryOfNote.containedIn("noteWriter", [
-                "MJ"
+            const _writtenNotes = await queryOfNote.containedIn("noteWriterAddress", [
+                user?.get("ethAddress")
             ]);
             const writtenNotes = await _writtenNotes.find();
 
@@ -54,7 +56,12 @@ function ProfilePage() {
                     {boughtPDFs.map((boughtPDF, index) => {
                         return (
                             <div key = {index} className = "pdf">
-                                {boughtPDF.get("title")}
+                                <BookItem
+                                    title={boughtPDF.attributes.title}
+                                    info={boughtPDF.attributes.info}
+                                    thumbnail={boughtPDF.attributes.thumbnail}
+                                    writer={boughtPDF.attributes.writer}
+                                />
                             </div>
                         )
                     })}
@@ -76,14 +83,20 @@ function ProfilePage() {
                     {boughtNotes.map((boughtNote, index) => {
                         return (
                             <>
-                                <div className="informationContainer" key = {index}>
-                                    <div className="informationTitle">
-                                        {boughtNote.get("noteTitle")}
+                                <Link
+                                    to="/pdfpage"
+                                    state={{ pdfName: boughtNote.get("pdfFileName") }}
+                                    className="buyPDFButtonContainer"
+                                >
+                                    <div className="informationContainer" key = {index}>
+                                        <div className="informationTitle">
+                                            {boughtNote.get("noteTitle")}
+                                        </div>
+                                        <div className="informationDetail">
+                                            {boughtNote.get("noteDetail")}
+                                        </div>
                                     </div>
-                                    <div className="informationDetail">
-                                        {boughtNote.get("noteDetail")}
-                                    </div>
-                                </div>
+                                </Link>
                             </>
                         )
                     })}
@@ -105,7 +118,12 @@ function ProfilePage() {
                     {writtenNotes.map((writtenNote, index) => {
                         return (
                             <>
-                                <div className="informationContainer" key = {index}>
+                                <Link
+                                    to="/pdfpage"
+                                    state={{ pdfName: writtenNote.get("pdfFileName") }}
+                                    className="buyPDFButtonContainer"
+                                >
+                                <div className="informationContainer" key = {index} >
                                     <div className="informationTitle">
                                         {writtenNote.get("noteTitle")}
                                     </div>
@@ -113,6 +131,7 @@ function ProfilePage() {
                                         {writtenNote.get("noteDetail")}
                                     </div>
                                 </div>
+                                </Link>
                             </>
                         )
                     })}
@@ -132,8 +151,10 @@ function ProfilePage() {
             <>
                 <div className="userProfile">
                     <div className="profileImageContainer">
-                        <div className="profileImage"></div>
-                        <div className="level"></div>
+                        <div className="profileImage">
+                            <img src={ProfileImage} alt="" />
+                        </div>
+                        <div className="level">7</div>
                     </div>
                     <div className="name">{
                         user?.get("name")
@@ -167,10 +188,12 @@ function ProfilePage() {
                     <div className="badgesContainer">
                         <div className="containerTitle">NFT Token</div>
                         <div className="badgesList">
-                            {[...Array(6)].map((key) => {
+                            {[...Array(6)].map((key, index) => {
                                 return (
                                     <>
-                                        <div className="badge"></div>
+                                        <div className="badge">
+                                            <img src={require(`../images/badges/Badge` + (index + 1) + `.png`)} alt="" />
+                                        </div>
                                     </>
                                 )
                             })}

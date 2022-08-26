@@ -17,8 +17,11 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
     const [good, setGood] = React.useState<number>(note.good.length);
     const [bad, setBad] = React.useState<number>(note.bad.length);
     const [noteDetail, setNoteDetail] = React.useState<string>("");
-    // getNote(Moralis, contractProcessor, note.noteHash, setNoteDetail);
-    if(note) {
+    React.useEffect(() => {
+      getNote(Moralis, contractProcessor, note.noteHash, setNoteDetail);
+    }, []);
+    const ViewNoteContainerByGetNote = React.useMemo(() => {
+      if(note) {
         const username = user?.get("username");
         return (
           <>
@@ -30,7 +33,7 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
                 <div className="title">{note.title}</div>
                 <div className="detailContainer">
                   <MDEditor.Markdown
-                    source={note.content}
+                    source={noteDetail}
                   />
                 </div >
                 <div className="goodBadContainer">
@@ -86,13 +89,20 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
               </div>
             </>
         )
-      } else {
-        return (
-            <>
-            
-            </>
-        )
-      }
+    } else {
+      return (
+          <>
+          
+          </>
+      )
+    }
+    }, [noteDetail, note])
+
+    return (
+      <>
+        {ViewNoteContainerByGetNote}
+      </>
+    )
 }
 
 export default ViewNoteContainer;

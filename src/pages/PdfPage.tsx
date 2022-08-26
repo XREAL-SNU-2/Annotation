@@ -32,7 +32,7 @@ import {
   useWeb3Transfer,
 } from 'react-moralis';
 import { useLocation } from 'react-router-dom';
-import { uploadNote } from '../functions/uplaodNote';
+import { getNote, uploadNote } from '../functions/uplaodNote';
 import { buyNote } from '../functions/buyNote';
 import hash from 'object-hash';
 import ViewNoteContainer from 'components/ViewNoteContainer';

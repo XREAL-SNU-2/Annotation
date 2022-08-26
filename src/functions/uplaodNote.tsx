@@ -47,7 +47,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
 
     if(note) {
         newNote.set("noteTitle", note.noteTitle);
-        newNote.set("noteDetail", note.noteDetail);
+        newNote.set("noteDetail", note.noteDetail.substring(0, 200));
         newNote.set("notePosition", note.notePosition);
         newNote.set("noteGoods", note.noteGoods);
         newNote.set("noteBads", note.noteBads);
@@ -117,7 +117,7 @@ const uploadNoteToContract = async (Moralis: any, contractProcessor: any, note: 
     })
 };
 
-export const getNote = async (Moralis: any, contractProcessor: any, noteHash: string, setNoteDetail: any) => {
+const getNoteFromContract = async (Moralis: any, contractProcessor: any, noteHash: string, setNoteDetail: any) => {
     const web3 = await Moralis.enableWeb3();
     await Moralis.authenticate();
     const options = {
@@ -159,14 +159,17 @@ export const getNote = async (Moralis: any, contractProcessor: any, noteHash: st
 
     await contractProcessor.fetch({
         params: options,
-        onSuccess: (noteDetail: any) => {
-            setNoteDetail(noteDetail);
-            alert("good");
+        onSuccess: (result: any) => {
+            setNoteDetail(result[0]);
         },
         onError: (error: any) => {
             alert(error);
         }
     })
+}
+
+export const getNote = (Moralis: any, contractProcessor: any, noteHash: string, setNoteDetail: any) => {
+    getNoteFromContract(Moralis, contractProcessor, noteHash, setNoteDetail);
 }
 
 export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation: NoteInformation): void => {

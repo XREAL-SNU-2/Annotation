@@ -15,6 +15,10 @@ import {
   Viewer,
   Worker,
 } from '@react-pdf-viewer/core';
+import { 
+  pageNavigationPlugin,
+  RenderCurrentPageLabelProps
+} from '@react-pdf-viewer/page-navigation';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
@@ -32,7 +36,8 @@ import { uploadNote } from '../functions/uplaodNote';
 import { buyNote } from '../functions/buyNote';
 import hash from 'object-hash';
 import ViewNoteContainer from 'components/ViewNoteContainer';
-interface Note {
+import WrittenNoteContainer from 'components/WrittenNoteContainer';
+export interface Note {
   id: number;
   content: string;
   highlightAreas: HighlightArea[];
@@ -45,6 +50,7 @@ interface Note {
   buyers: string[];
   title: string;
   labelColor: string;
+  writerAddress: string;
 }
 
 interface CustomizedState {
@@ -64,6 +70,8 @@ const PdfPage = () => {
   const [notePrice, setNotePrice] = React.useState<number>(0);
   const [userName, setUserName] = React.useState<string>('');
   const [newLabelColorIndex, setNewLabelColorIndex] = React.useState<number>(0);
+  const [reload, setReload] = React.useState<boolean>(false);
+  const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [pdffileUrl, setPdfFileUrl] = React.useState<string>(
     'https://ipfs.io/ipfs/QmbXiqFbSBqikhNLLb5vKCHpyegcXTJ7g4wpBc1UqTGM3g?filename=session%20messenger.pdf',
   );
@@ -85,6 +93,15 @@ const PdfPage = () => {
   });
   const user = Moralis.User.current();
   const [userEthAddress, setUserEthAddress] = React.useState<string>('');
+  const pageNavigationPluginInstance = pageNavigationPlugin();
+  const { CurrentPageLabel } = pageNavigationPluginInstance;
+
+  React.useEffect(() => {
+    if(reload) {
+      window.location.reload();
+      setReload(false);
+    }
+  }, [reload])
 
   React.useEffect(() => {
     async function getPDF() {
@@ -122,6 +139,7 @@ const PdfPage = () => {
           buyers: note.get("buyers"),
           title: note.get("noteTitle"),
           labelColor: note.get("labelColor"),
+          writerAddress: note.get("noteWriterAddress")
         }
         noteList.push(newNote);
       })
@@ -218,7 +236,8 @@ const PdfPage = () => {
           noteHash: "",
           buyers: [],
           title: "",
-          labelColor: ""
+          labelColor: "",
+          writerAddress: ""
         };
         setNotes(notes.concat([note]));
         props.cancel();
@@ -287,7 +306,8 @@ const PdfPage = () => {
         noteHash: "",
         buyers: [],
         title: noteTitle,
-        labelColor: labelColor
+        labelColor: labelColor,
+        writerAddress: ""
       };
       setNotes(notes.concat([note]));
       cancel;
@@ -331,7 +351,8 @@ const PdfPage = () => {
                 notePrice: notePrice,
                 pdfFileName: pdfFileName,
                 noteSelectedText: notePropsSelectedText,
-                labelColor: labelColors[newLabelColorIndex]
+                labelColor: labelColors[newLabelColorIndex],
+                writerAddress: userEthAddress
               });
               setNewLabelColorIndex((newLabelColorIndex + 1) % 3);
               setWrittingMode(false);
@@ -357,105 +378,6 @@ const PdfPage = () => {
     noteTitle
   ]);
 
-  const writtenNoteContainer = React.useMemo(() => {
-    return (
-      <>
-        {notes.length === 0 && <div>There is no note</div>}
-        {notes.map(note => {
-            const good = note.good.length;
-            const bad = note.bad.length;
-            return (
-              <div
-                key={note.id}
-                className="note-box"
-                style={{
-                  cursor: 'pointer',
-                }}
-              >
-                <div className="note-content">
-                  <div
-                    // Jump to the associated highlight area
-                    onClick={() => jumpToHighlightArea(note.highlightAreas[0])}
-                  >
-                    <div className="label" style = {{"backgroundColor": note.labelColor}}></div>
-                    <text className="note-authorName">
-                      Noted by {note.author}
-                    </text>
-                    <div className="title">{note.title}</div>
-                    <div className="detail">
-                      <MDEditor.Markdown
-                        source={note.content.substring(0, 200)}
-                        style={{ backgroundColor: '#FFFFFF', height: 120 }}
-                      />
-                    </div>
-                  </div>
-                  <div className="informationContainer">
-                    <div className="goodBad">
-                      <text className="note-boldword">Good</text>
-                      <text className="note-mideumword">{good}</text>
-                      <text className="note-boldword" style = {{"marginLeft": "51px"}}>Bad</text>
-                      <text className="note-mideumword">{bad}</text>
-                    </div>
-                    {note.buyers.includes(user?.get("username")) ? <button className="buy-button" onClick={() => {
-                      setViewMode(true);
-                      setSelectedNote(note);
-                    }} >
-                      VIEW NOTE
-                    </button> : <button className="buy-button" onClick={async () => {
-                      // console.log("Btn Clicked");
-                      const selectedNote = Moralis.Object.extend('Notes');
-                      const currentNoteHash = hash({
-                        noteDetail: note.content,
-                        noteWriter: note.author,
-                        notePosition: note.highlightAreas,
-                      });
-                      //console.log(currentNoteHash);
-                      // console.log(currentNoteHash);
-                      const noteQuery = new Moralis.Query(selectedNote);
-                      noteQuery.equalTo('noteHash', currentNoteHash);
-                      const results = await noteQuery.find();
-                      // console.log(results[0]);
-                      const noteWriterEthAddress =
-                        results[0].get('noteWriterAddress');
-                      const noteId = results[0].id;
-                      // console.log(noteId);
-                      // console.log(noteWriterEthAddress);
-                      //const writerAddress = results[0].get("ethAddress");
-                      //console.log(writerAddress);
-                      //const buyerAddress = Moralis.User.current()?.get("ethAddress");
-                      buyNote(Moralis, transferProcessor, {
-                        noteObjectId: noteId,
-                        notePrice: note.price,
-                        noteWriterAddress: noteWriterEthAddress,
-                        buyerAddress: userEthAddress,
-                      });
-                    }}>
-                    USE {note.price} TOKEN TO READ
-                  </button>}
-                  </div>
-                </div>
-              </div>
-            );
-          
-        })}
-      </>
-    );
-  }, [notes, user]);
-
-  /*const buyNote = async (noteHash: string)=> {
-      const notes = Moralis.Object.extend("Notes");
-      const query = new Moralis.Query(notes);
-      const _noteOfPDF = await query.equalTo("noteHash", noteHash);
-      const noteOfPDF = await _noteOfPDF.find();
-      const buyingNote = noteOfPDF[0];
-
-      const currentBuyers = buyingNote.get("buyers");
-      currentBuyers.push(user?.get("username"));
-      buyingNote.set("buyers", currentBuyers);
-
-      buyingNote.save();
-  }*/
-
   const jumpToNote = (note: Note) => {
     if (noteEles.has(note.id)) {
       noteEles.get(note.id)?.scrollIntoView();
@@ -479,7 +401,9 @@ const PdfPage = () => {
                   },
                   props.getCssProperties(area, props.rotation),
                 )}
-                onClick={() => jumpToNote(note)}
+                onClick={() => {
+                  jumpToNote(note);
+                }}
                 ref={(ref): void => {
                   noteEles.set(note.id, ref as HTMLElement);
                 }}
@@ -498,18 +422,36 @@ const PdfPage = () => {
 
   const { jumpToHighlightArea } = highlightPluginInstance;
 
+  const WrittenNoteContainerByPage = React.useMemo(() => {
+    return (
+      <WrittenNoteContainer notes = {notes} jumpToHighlightArea = {jumpToHighlightArea} setViewMode = {setViewMode} setSelectedNote = {setSelectedNote} userEthAddress = {userEthAddress} setReload = {setReload} currentPage = {currentPage}></WrittenNoteContainer>
+    )
+  }, [currentPage])
+
   return (
     <div className="pdfPage">
+      <CurrentPageLabel>
+        {(props: RenderCurrentPageLabelProps) => {
+          setCurrentPage(props.currentPage);
+          return (
+            <></>
+          )
+        }}
+      </CurrentPageLabel>
       <div className="pdf-wrapper">
         <div className="pdf-content">
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
-            <Viewer fileUrl={pdffileUrl} plugins={[highlightPluginInstance]} />
+            <Viewer fileUrl={pdffileUrl} plugins={[highlightPluginInstance, pageNavigationPluginInstance]} />
           </Worker>
         </div>
       </div>
       {(!viewMode && writtingMode) && <div className="post-list">{writeNoteContainer}</div>}
-      {(!viewMode && !writtingMode) && <div className="post-list">{writtenNoteContainer}</div>}
-      {viewMode && <div className="post-list">{<ViewNoteContainer note = {selectedNote!} notePropsCancel = {notePropsCancel} setViewMode = {setViewMode}></ViewNoteContainer>}</div>}
+      {(!viewMode && !writtingMode) && <div className="post-list">
+        {WrittenNoteContainerByPage}
+      </div>}
+      {viewMode && <div className="post-list">
+        {<ViewNoteContainer note = {selectedNote!} notePropsCancel = {notePropsCancel} setViewMode = {setViewMode}></ViewNoteContainer>}
+      </div>}
     </div>
   );
 };

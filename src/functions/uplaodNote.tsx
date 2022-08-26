@@ -16,6 +16,7 @@ export interface Note {
     noteSelectedText: string;
     buyers: string[];
     labelColor: string;
+    writerAddress: string;
 }
 
 export interface NoteInformation {
@@ -28,6 +29,7 @@ export interface NoteInformation {
     pdfFileName: string;
     noteSelectedText: string;
     labelColor: string;
+    writerAddress: string;
 }
 
 const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
@@ -45,7 +47,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
 
     if(note) {
         newNote.set("noteTitle", note.noteTitle);
-        newNote.set("noteDetail", note.noteDetail);
+        newNote.set("noteDetail", note.noteDetail.substring(0, 200));
         newNote.set("notePosition", note.notePosition);
         newNote.set("noteGoods", note.noteGoods);
         newNote.set("noteBads", note.noteBads);
@@ -57,6 +59,7 @@ const updatePDF = async (Moralis: any, note: any, noteHash: string) => {
         newNote.set("noteWriter", note.noteWriter);
         newNote.set("noteWriterAddress", note.noteWriterAddress);
         newNote.set("labelColor", note.labelColor);
+        newNote.set("noteWriterAddress", note.writerAddress)
     }
 
     await newNote.save().then(async (savedNote: any) => {
@@ -75,7 +78,7 @@ const uploadNoteToContract = async (Moralis: any, contractProcessor: any, note: 
     // const [contractError, setContractError] = React.useState<string>();
     const web3 = await Moralis.enableWeb3();
     const options = {
-        contractAddress: "0x2b13bF58F20eDa732837b5F06eA04eB9224730c7",
+        contractAddress: "0xbE553a3824E24D606DcD2E9fe19B2A376a286297",
         functionName: "addNote",
         abi: [{
             "inputs": [
@@ -114,6 +117,58 @@ const uploadNoteToContract = async (Moralis: any, contractProcessor: any, note: 
     })
 };
 
+export const getNote = async (Moralis: any, contractProcessor: any, noteHash: string, setNoteDetail: any) => {
+    const web3 = await Moralis.enableWeb3();
+    await Moralis.authenticate();
+    const options = {
+        contractAddress: "0xbE553a3824E24D606DcD2E9fe19B2A376a286297",
+        functionName: "getNote",
+        abi: [{
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "noteHash",
+                    "type": "string"
+                }
+            ],
+            "name": "getNote",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }],
+        params: {
+            noteHash: noteHash
+        },
+    }
+
+    await contractProcessor.fetch({
+        params: options,
+        onSuccess: (noteDetail: any) => {
+            setNoteDetail(noteDetail);
+            alert("good");
+        },
+        onError: (error: any) => {
+            alert(error);
+        }
+    })
+}
+
 export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation: NoteInformation): void => {
     const user = Moralis.User.current();
     const noteHash = hash({"noteDetail": noteInformation.noteDetail, "noteWriter": noteInformation.noteWriter, "notePosition": noteInformation.notePosition });
@@ -130,6 +185,7 @@ export const uploadNote = (Moralis: any, contractProcessor: any, noteInformation
         noteSelectedText: noteInformation.noteSelectedText,
         buyers: [],
         labelColor: noteInformation.labelColor,
+        writerAddress: noteInformation.writerAddress
     }
     
     uploadNoteToContract(Moralis, contractProcessor, note, noteHash);

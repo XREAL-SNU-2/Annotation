@@ -1,6 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
+import { getNote } from 'functions/uplaodNote';
 import React, { PureComponent, useState } from 'react';
-import { useMoralis } from 'react-moralis';
+import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis';
 import { Note } from '../pages/PdfPage';
 
 interface props {
@@ -11,10 +12,12 @@ interface props {
 
 function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
     const { Moralis } = useMoralis();
+    const contractProcessor = useWeb3ExecuteFunction();
     const user = Moralis.User.current();
     const [good, setGood] = React.useState<number>(note.good.length);
     const [bad, setBad] = React.useState<number>(note.bad.length);
-
+    const [noteDetail, setNoteDetail] = React.useState<string>("");
+    // getNote(Moralis, contractProcessor, note.noteHash, setNoteDetail);
     if(note) {
         const username = user?.get("username");
         return (
@@ -32,7 +35,7 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
                 </div >
                 <div className="goodBadContainer">
                   <div className="goodContainer">
-                    <button className="good" onClick={async () => {
+                    <button className={"good" + (note.good.includes(username) ? " voted" : "")} onClick={async () => {
                       if(!note.good.includes(username) && !note.bad.includes(username)) {
                         const goodList = note.good;
                         goodList.push(username);
@@ -53,8 +56,8 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
                     <div className="goods">{good}</div>
                   </div>
                   <div className="badContainer">
-                    <button className="bad" onClick={async () => {
-                      if(!note.bad.includes(username) && !note.bad.includes(username)) {
+                    <button className={"bad" + (note.bad.includes(username) ? " voted" : "")} onClick={async () => {
+                      if(!note.good.includes(username) && !note.bad.includes(username)) {
                         const badList = note.bad;
                         badList.push(username);
   

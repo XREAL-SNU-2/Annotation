@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.33ea84a4.css",
-    "main.js": "/static/js/main.3e06d1f3.js",
+    "main.css": "/static/css/main.2cfa6845.css",
+    "main.js": "/static/js/main.e8463b1f.js",
     "static/js/667.43dd421b.chunk.js": "/static/js/667.43dd421b.chunk.js",
     "static/js/974.1477d699.chunk.js": "/static/js/974.1477d699.chunk.js",
     "static/js/510.57a4bfcf.chunk.js": "/static/js/510.57a4bfcf.chunk.js",
@@ -18,11 +18,17 @@
     "static/js/562.a06faf3b.chunk.js": "/static/js/562.a06faf3b.chunk.js",
     "static/js/918.135fc622.chunk.js": "/static/js/918.135fc622.chunk.js",
     "static/js/798.76d4746a.chunk.js": "/static/js/798.76d4746a.chunk.js",
+    "static/media/Badge2.png": "/static/media/Badge2.9954409fc0030b1a2f02.png",
     "static/media/swap_arrow.png": "/static/media/swap_arrow.096866e7ab36fbd550ca.png",
+    "static/media/Badge4.png": "/static/media/Badge4.f8a1d75e209fcbb07fe2.png",
+    "static/media/Badge6.png": "/static/media/Badge6.78182770540007317899.png",
+    "static/media/Badge3.png": "/static/media/Badge3.c880208d85c415e5e23f.png",
+    "static/media/Badge5.png": "/static/media/Badge5.4319b16958f9f8077865.png",
+    "static/media/Badge1.png": "/static/media/Badge1.6da7bec39f7062486d0d.png",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.33ea84a4.css",
-    "static/js/main.3e06d1f3.js"
+    "static/css/main.2cfa6845.css",
+    "static/js/main.e8463b1f.js"
   ]
 }

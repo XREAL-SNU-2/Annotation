@@ -95,11 +95,7 @@ function WrittenNoteContainer({
                     onClick={async () => {
                       // console.log("Btn Clicked");
                       const selectedNote = Moralis.Object.extend('Notes');
-                      const currentNoteHash = hash({
-                        noteDetail: note.content,
-                        noteWriter: note.author,
-                        notePosition: note.highlightAreas,
-                      });
+                      const currentNoteHash = note.noteHash;
                       //console.log(currentNoteHash);
                       // console.log(currentNoteHash);
                       const noteQuery = new Moralis.Query(selectedNote);

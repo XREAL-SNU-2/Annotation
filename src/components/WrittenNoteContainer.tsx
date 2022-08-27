@@ -48,7 +48,7 @@ function WrittenNoteContainer({notes, jumpToHighlightArea, setViewMode, setSelec
                       <div className="title">{note.title}</div>
                       <div className="detail">
                         <MDEditor.Markdown
-                          source={note.content.substring(0, 200)}
+                          source={note.content + "..."}
                           style={{ backgroundColor: '#FFFFFF', height: 120 }}
                         />
                       </div>
@@ -69,19 +69,14 @@ function WrittenNoteContainer({notes, jumpToHighlightArea, setViewMode, setSelec
                       </button> : <button className="buy-button" onClick={async () => {
                         // console.log("Btn Clicked");
                         const selectedNote = Moralis.Object.extend('Notes');
-                        const currentNoteHash = hash({
-                          noteDetail: note.content,
-                          noteWriter: note.author,
-                          notePosition: note.highlightAreas,
-                        });
+                        const currentNoteHash = note.noteHash;
                         //console.log(currentNoteHash);
                         // console.log(currentNoteHash);
                         const noteQuery = new Moralis.Query(selectedNote);
                         noteQuery.equalTo('noteHash', currentNoteHash);
                         const results = await noteQuery.find();
                         // console.log(results[0]);
-                        const noteWriterEthAddress =
-                          results[0].get('noteWriterAddress');
+                        const noteWriterEthAddress = results[0].get('noteWriterAddress');
                         const noteHash = results[0].get("noteHash");
                         // console.log(noteId);
                         // console.log(noteWriterEthAddress);

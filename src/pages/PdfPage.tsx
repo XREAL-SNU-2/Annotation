@@ -426,7 +426,7 @@ const PdfPage = () => {
     return (
       <WrittenNoteContainer notes = {notes} jumpToHighlightArea = {jumpToHighlightArea} setViewMode = {setViewMode} setSelectedNote = {setSelectedNote} userEthAddress = {userEthAddress} setReload = {setReload} currentPage = {currentPage}></WrittenNoteContainer>
     )
-  }, [currentPage])
+  }, [currentPage, notes])
 
   return (
     <div className="pdfPage">

@@ -32,9 +32,11 @@ function ViewNoteContainer({note, notePropsCancel, setViewMode}: props) {
                 </div>
                 <div className="title">{note.title}</div>
                 <div className="detailContainer">
-                  <MDEditor.Markdown
-                    source={noteDetail}
-                  />
+                  <div className="detailPadding">
+                    <MDEditor.Markdown
+                      source={noteDetail}
+                    />  
+                  </div>
                 </div >
                 <div className="goodBadContainer">
                   <div className="goodContainer">
